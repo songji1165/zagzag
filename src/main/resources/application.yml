@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3333/zagzag?serverTimezone=UTC
+    username: root
+    password: thddmswl7
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
