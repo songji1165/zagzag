@@ -1,14 +1,10 @@
 package com.jtrio.zagzag.user;
 
 import com.jtrio.zagzag.exception.DuplicateEmailException;
-import com.jtrio.zagzag.exception.NoDataUserException;
+import com.jtrio.zagzag.exception.NotFoundUserException;
 import com.jtrio.zagzag.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +37,7 @@ public class UserService {
 
     public UserDto updateUser(Long id, UserCommand.UpdateUser command){
 
-        User user = userRepository.findById(id).orElseThrow(() -> new NoDataUserException("해당 사용자의 정보가 없습니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundUserException("해당 사용자의 정보가 없습니다."));
 
         userRepository.save(command.toUser(user));
         return user.toUserDto();
