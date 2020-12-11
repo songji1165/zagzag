@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.user;
 
+import com.jtrio.zagzag.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,13 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserCommand.UpdateUser user) {
-        return new ResponseEntity<UserDto>(userService.updateUser(id, user), HttpStatus.OK);
+    public ResponseEntity<Object> updateUser(@PathVariable("id") Long id, @RequestBody UserCommand.UpdateUser user) {
+//        try{
+           return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
+//        }catch (RuntimeException e) {
+//            NotFoundUserException notFound = new NotFoundUserException("해당 사용자를 찾을 수 없습니다.");
+//           return new ResponseEntity<>(notFound,HttpStatus.NOT_FOUND);
+//        }
     }
 
 }
