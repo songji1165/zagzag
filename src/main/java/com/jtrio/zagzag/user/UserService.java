@@ -37,7 +37,7 @@ public class UserService {
 
     public UserDto updateUser(Long id, UserCommand.UpdateUser command){
 
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundUserException("해당 사용자를 찾을 수 없습니다.222"));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundUserException("해당 사용자를 찾을 수 없습니다."));
 
         userRepository.save(command.toUser(user));
         return user.toUserDto();

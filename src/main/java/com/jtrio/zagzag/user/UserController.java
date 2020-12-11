@@ -1,11 +1,13 @@
 package com.jtrio.zagzag.user;
 
+import com.jtrio.zagzag.exception.DuplicateEmailException;
 import com.jtrio.zagzag.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/users")
@@ -22,24 +24,25 @@ public class UserController {
      **/
 
    @PostMapping
-   public ResponseEntity<UserDto> joinUser(@RequestBody UserCommand.CreateUser user){
-
-       return new ResponseEntity<UserDto>(userService.joinUser(user), HttpStatus.OK);
+   public ResponseEntity<Object> joinUser(@RequestBody UserCommand.CreateUser user){
+        try{
+            return new ResponseEntity<>(userService.joinUser(user), HttpStatus.OK);
+        }catch(RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
    }
 
     @GetMapping("/duplicate-email")
-    public boolean getUserEmail(String email){
-        return userService.findUserEmail(email);
+    public ResponseEntity<Boolean> getUserEmail(String email){
+       return new ResponseEntity<>(userService.findUserEmail(email), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable("id") Long id, @RequestBody UserCommand.UpdateUser user) {
-//        try{
-           return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
-//        }catch (RuntimeException e) {
-//            NotFoundUserException notFound = new NotFoundUserException("해당 사용자를 찾을 수 없습니다.");
-//           return new ResponseEntity<>(notFound,HttpStatus.NOT_FOUND);
-//        }
+        try{ return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
+        }catch (RuntimeException e) {
+           return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
     }
 
 }
