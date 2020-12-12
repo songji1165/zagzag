@@ -19,6 +19,9 @@ public class Product {
     private Byte productScore;
     private Byte deliveryScore;
 
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
     @CreatedDate
     private LocalDateTime created;
     @LastModifiedDate
