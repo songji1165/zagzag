@@ -18,31 +18,22 @@ public class UserController {
 
 
     /**
-     * 1. Post : 회원가입 RequestBody (email, pass, name, gender, addr) /join
-     * 2. name 조회 : get /user/name
-     * 3. email 조회 : get /user/email
+     * catch(정확하게  예외 클래스 지정해주기 )
      **/
 
    @PostMapping
-   public ResponseEntity<Object> joinUser(@RequestBody UserCommand.CreateUser user){
-        try{
-            return new ResponseEntity<>(userService.joinUser(user), HttpStatus.OK);
-        }catch(RuntimeException e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
+   public UserDto joinUser(@RequestBody UserCommand.CreateUser user){
+       return userService.joinUser(user);
    }
 
     @GetMapping("/duplicate-email")
-    public ResponseEntity<Boolean> getUserEmail(String email){
-       return new ResponseEntity<>(userService.findUserEmail(email), HttpStatus.OK);
+    public boolean getUserEmail(String email){
+       return userService.findUserEmail(email);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") Long id, @RequestBody UserCommand.UpdateUser user) {
-        try{ return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
-        }catch (RuntimeException e) {
-           return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
-        }
+    public UserDto updateUser(@PathVariable("id") Long id, @RequestBody UserCommand.UpdateUser user) {
+        return userService.updateUser(id, user);
     }
 
 }

@@ -1,12 +1,15 @@
 package com.jtrio.zagzag.exception;
 
-import lombok.Data;
+import org.springframework.http.HttpStatus;
 
-@Data
-public class DuplicateEmailException extends RuntimeException {
+public class DuplicateEmailException extends ApiException {
 
     public DuplicateEmailException(String message){
         super(message);
+    }
+
+    public HttpStatus getStatus(){
+        return HttpStatus.BAD_REQUEST;
     }
 
 }

@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 //import static com.jtrio.zagzag.enums.ErrorMsg;
 //import static com.jtrio.zagzag.enums.ErrorMsg.EMAIL;
 
-
 public class UserCommand {
 //    private ErrorMsg errMsg;
 
