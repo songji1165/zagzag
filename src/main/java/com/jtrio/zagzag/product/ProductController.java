@@ -27,7 +27,7 @@ public class ProductController {
      *  2. 상품 저장 후, 저장된 상품 return
     **/
     @PostMapping
-    public ProductDto addProduct(@RequestBody Category category, @RequestBody ProductCommand product){
+    public ProductDto addProduct(@RequestBody Category category, @RequestBody ProductCommand.CreateProduct product){
         return productService.addProduct(category, product);
     }
 
