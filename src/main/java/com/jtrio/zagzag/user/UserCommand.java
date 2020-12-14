@@ -51,4 +51,10 @@ public class UserCommand {
         }
     }
 
+    @Data
+    public static class CheckUser {
+        private String name;
+        private String email;
+    }
+
 }
