@@ -31,4 +31,18 @@ public class Product {
     @LastModifiedDate
     private LocalDateTime updated;
 
+    public ProductDto toProductDto(){
+        ProductDto productDto= new ProductDto();
+
+        productDto.setName(name);
+        productDto.setPrice(price);
+        productDto.setImage(image);
+        productDto.setProductScore(productScore);
+        productDto.setDeliveryScore(deliveryScore);
+        productDto.setCategoryId(category.getId());
+        productDto.setCategoryName(category.getName());
+
+        return productDto;
+    }
+
 }
