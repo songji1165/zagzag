@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.product;
 
+import com.jtrio.zagzag.model.Category;
 import com.jtrio.zagzag.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,8 @@ public class ProductController {
      *  2. 상품 저장 후, 저장된 상품 return
     **/
     @PostMapping
-    public ProductDto addProduct(@RequestParam("category") Long categoryId, @RequestBody ProductCommand product){
-        return productService.addProduct(categoryId, product);
+    public ProductDto addProduct(@RequestBody Category category, @RequestBody ProductCommand product){
+        return productService.addProduct(category, product);
     }
 
 }

@@ -30,8 +30,8 @@ public class ProductService  {
         return produtsDto;
     }
 
-    public ProductDto addProduct(Long categoryId, ProductCommand productCommand){
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
+    public ProductDto addProduct(Category category, ProductCommand productCommand){
+        categoryRepository.findById(category.getId()).orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
         Product product = productCommand.toProduct(category);
         productRepository.save(product);
