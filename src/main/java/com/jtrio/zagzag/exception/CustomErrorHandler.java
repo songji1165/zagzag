@@ -18,7 +18,7 @@ public class CustomErrorHandler{
     public ResponseEntity handleError(ApiException e){
 //        if(e instanceof DuplicateEmailException){
 //            new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-//        }else if(e instanceof NotFoundUserException){
+//        }else if(e instanceof NotFoundException){
 //            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 //        }
 //
