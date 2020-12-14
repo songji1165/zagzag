@@ -1,6 +1,6 @@
 package com.jtrio.zagzag.enums;
 
-public enum Status {
+public enum MessageStatus {
     DELETE,
     BLOCK,
     NORMAL

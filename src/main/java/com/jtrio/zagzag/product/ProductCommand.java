@@ -7,13 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 @Data
 public class ProductCommand {
 //    private final CategoryRepository categoryRepository;
 
+    @NotBlank
     private String name;
+    @NotBlank
     private Integer price;
     private String image;
     private Byte productScore;

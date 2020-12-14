@@ -1,7 +1,7 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.enums.CommenterType;
-import com.jtrio.zagzag.enums.Status;
+import com.jtrio.zagzag.enums.MessageStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +17,7 @@ public class Comment {
     private Long id;
     private String content;
     private CommenterType commenterType;
-    private Status status;
+    private MessageStatus messageStatus;
     private Boolean secret;
 
     @CreatedDate

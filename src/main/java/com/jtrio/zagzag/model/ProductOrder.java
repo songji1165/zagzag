@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.model;
 
+import com.jtrio.zagzag.enums.OrderStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +15,7 @@ public class ProductOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer price; //총 금액
+    private OrderStatus status;
 
     @CreatedDate
     private LocalDateTime created;

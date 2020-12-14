@@ -1,6 +1,6 @@
 package com.jtrio.zagzag.model;
 
-import com.jtrio.zagzag.enums.Status;
+import com.jtrio.zagzag.enums.MessageStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,7 +18,7 @@ public class Question {
     private String content;
     private Boolean purchase;
     private Boolean secret;
-    private Status status;
+    private MessageStatus messageStatus;
 
     @CreatedDate
     private LocalDateTime created;
