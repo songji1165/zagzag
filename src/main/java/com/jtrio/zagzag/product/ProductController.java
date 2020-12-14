@@ -30,6 +30,4 @@ public class ProductController {
         return productService.addProduct(categoryId, product);
     }
 
-//    @PostMapping
-//    public productDto
 }
