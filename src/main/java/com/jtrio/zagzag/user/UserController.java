@@ -1,7 +1,7 @@
 package com.jtrio.zagzag.user;
 
 import com.jtrio.zagzag.exception.DuplicateEmailException;
-import com.jtrio.zagzag.exception.NotFoundUserException;
+import com.jtrio.zagzag.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

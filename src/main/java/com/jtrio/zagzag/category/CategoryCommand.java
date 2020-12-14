@@ -7,6 +7,4 @@ import lombok.Data;
 public class CategoryCommand {
     private Long id;
     private String name;
-
-
 }
