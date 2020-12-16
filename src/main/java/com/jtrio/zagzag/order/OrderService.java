@@ -10,11 +10,19 @@ import com.jtrio.zagzag.security.UserSecurity;
 import com.jtrio.zagzag.user.UserCommand;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +61,32 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.toOrderDto();
+    }
+
+    public List<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt){
+        User user = userRepository.findByEmail(userId).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+        List<ProductOrder> allProduts;
+        List<OrderDto> productsDto = new ArrayList<>();
+
+        if(startDt == null){ //전체조회 or 시작기간에러
+            if(endDt != null){ throw new IllegalArgumentException("시작기간을 선택해주세요."); }
+
+            allProduts = orderRepository.findAll();
+
+        }else{//기간조회
+            endDt = Optional.ofNullable(endDt).orElse(LocalDate.now());
+
+            LocalDateTime start = startDt.atTime(20,16, 40, 1600);
+            LocalDateTime end = endDt.atTime(20,16, 40, 1600);
+
+            allProduts = orderRepository.findByCreatedBetween(start, end);
+        }
+
+        for(ProductOrder product : allProduts) {
+            OrderDto order = product.toOrderDto();
+            productsDto.add(order);
+        }
+
+        return productsDto;
     }
 }
