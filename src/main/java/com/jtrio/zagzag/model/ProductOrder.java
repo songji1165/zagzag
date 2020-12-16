@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,18 +31,29 @@ public class ProductOrder {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
-    @ManyToOne
+//    @ManyToOne
+    @OneToMany
     @JoinColumn(name="product_id")
-    private Product product;
+    private List<Product> products;
 
     public OrderDto toOrderDto(){
         OrderDto orderDto = new OrderDto();
-        ProductDto productDto = product.toProductDto();
 
-        orderDto.setCategoryName(productDto.getCategoryName());
-        orderDto.setProductName(product.getName());
-        orderDto.setPrice(product.getPrice());
-        orderDto.setImg(product.getImage());
+        List<ProductDto.OrderProduct> productsList = new ArrayList<>();
+        for(Product product : products){
+            ProductDto.OrderProduct orderProduct = new ProductDto.OrderProduct();
+
+            orderProduct.setId(product.getId());
+            orderProduct.setName(product.getName());
+            orderProduct.setPrice(product.getPrice());
+            orderProduct.setImage(product.getImage());
+            orderProduct.setCategory(product.getCategory());
+
+            productsList.add(orderProduct);
+        }
+
+        orderDto.setId(id);
+        orderDto.setProducts(productsList);
         orderDto.setTotalPrice(price);
         orderDto.setStatus(status);
         orderDto.setCreated(created);

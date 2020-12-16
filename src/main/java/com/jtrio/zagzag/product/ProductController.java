@@ -17,7 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public List<ProductDto> getProducts(@RequestParam("category") Long categoryId){
+    public List<ProductDto.CreateProductDto> getProducts(@RequestParam("category") Long categoryId){
         return productService.getProducts(categoryId);
     }
 
@@ -33,7 +33,7 @@ public class ProductController {
      *   + requestBody command로 받는게 좋다 .?
     **/
     @PostMapping
-    public ProductDto addProduct(@RequestBody ProductCommand.CreateProduct product){
+    public ProductDto.CreateProductDto addProduct(@RequestBody ProductCommand.CreateProduct product){
 //    public ProductDto addProduct(@RequestBody Map<String, Object> param){
         return productService.addProduct(product);
     }
