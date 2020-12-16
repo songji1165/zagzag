@@ -21,9 +21,11 @@ public class ProductCommand {
         private String image;
         private Byte productScore;
         private Byte deliveryScore;
+        private Long categoryId;
 
         public Product toProduct(Category category){
             Product product = new Product();
+
             product.setName(name);
             product.setPrice(price);
             product.setImage(image);
