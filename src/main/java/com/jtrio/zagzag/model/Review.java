@@ -1,6 +1,8 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.enums.Evaluation;
+import com.jtrio.zagzag.review.ReviewDto;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Data
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Review {
     @Id
@@ -32,4 +35,18 @@ public class Review {
     @JoinColumn(name="product_id")
     private Product product;
 
+    public ReviewDto toReviewDto(String userId){
+        ReviewDto reviewDto = new ReviewDto();
+
+        reviewDto.setId(id);
+        reviewDto.setContent(content);
+        reviewDto.setProductScore(productScore);
+        reviewDto.setDeliveryScore(deliveryScore);
+        reviewDto.setLikers(likers.size());
+        reviewDto.setCreated(created);
+        reviewDto.setUpdated(updated);
+        reviewDto.setUserId(userId);
+
+        return reviewDto;
+    }
 }
