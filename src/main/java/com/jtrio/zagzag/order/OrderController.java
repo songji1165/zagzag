@@ -1,16 +1,18 @@
 package com.jtrio.zagzag.order;
 
+import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.product.ProductCommand;
 import com.jtrio.zagzag.product.ProductDto;
 import com.jtrio.zagzag.user.UserCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/order")
@@ -36,7 +38,18 @@ public class OrderController {
     @PostMapping
 //    public OrderDto order(@RequestBody UserCommand.CheckUser user, @RequestBody Long productId){
     public OrderDto order(@RequestBody OrderCommand.OrderProduct params){
-
         return orderService.order(params);
     }
+
+    @GetMapping
+    public List<OrderDto> findOrder(
+            @RequestParam(value = "userid") String userId,
+            @RequestParam(value = "startdt", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDt,
+            @RequestParam(value="enddt", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDt
+    ){
+        return orderService.findOrder(userId, startDt, endDt);
+    }
+
 }
