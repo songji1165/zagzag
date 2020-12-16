@@ -10,8 +10,10 @@ import com.jtrio.zagzag.security.UserSecurity;
 import com.jtrio.zagzag.user.UserCommand;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +22,6 @@ public class OrderService {
     private final UserRepository userRepository;
     private final UserSecurity userSecurity;
     private final ProductRepository productRepository;
-    private final ProductOrder productOrder;
-    private final OrderCommand.OrderProduct orderCommand;
     private final OrderRepository orderRepository;
 
     /***
@@ -34,17 +34,24 @@ public class OrderService {
      *  대체 : user정보가 등록된 user인지 확인하기
      *
      * */
+    public OrderDto order(OrderCommand.OrderProduct params){
+//        User user = userSecurity.isUser(params.getUserId());
+        User user = userRepository.findByEmail(params.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+        List<Long> productsId = params.getProducts();
+        List<Product> products = new ArrayList<>();
+        Integer totalPrice = 0;
 
+        for(Long id : productsId){
+            Product product = productRepository.findById(id).orElseThrow(()->new NotFoundException("해당 상품이 존재하지 않습니다."));
+            products.add(product);
 
-    public OrderDto order(UserCommand.CheckUser checkUser, Long productId){
+            totalPrice += product.getPrice();
+        }
 
-        User user = userSecurity.isUser(checkUser);
-
-        Product product = productRepository.findById(productId).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
-
-        ProductOrder order = orderCommand.toProductOrder(user, product);
+        ProductOrder order = params.toProductOrder(user, products, totalPrice);
 
         orderRepository.save(order);
+
         return order.toOrderDto();
     }
 }

@@ -16,11 +16,11 @@ public class ProductService  {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
-    public List<ProductDto> getProducts(long categoryId){
+    public List<ProductDto.CreateProductDto> getProducts(long categoryId){
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
-        List<ProductDto> produtsDto = new ArrayList<>();
+        List<ProductDto.CreateProductDto> produtsDto = new ArrayList<>();
         List<Product> products = productRepository.findByCategory(category);
 
         for(Product product : products){
@@ -30,7 +30,7 @@ public class ProductService  {
         return produtsDto;
     }
 
-    public ProductDto addProduct(ProductCommand.CreateProduct productCommand){
+    public ProductDto.CreateProductDto addProduct(ProductCommand.CreateProduct productCommand){
         Category category = categoryRepository.findById(productCommand.getCategoryId()).orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
         Product product = productCommand.toProduct(category);

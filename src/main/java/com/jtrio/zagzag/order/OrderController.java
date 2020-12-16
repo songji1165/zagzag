@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
@@ -33,7 +34,9 @@ public class OrderController {
     * */
 
     @PostMapping
-    public OrderDto order(@RequestBody UserCommand.CheckUser user, @RequestBody Long productId){
-        return orderService.order(user, productId);
+//    public OrderDto order(@RequestBody UserCommand.CheckUser user, @RequestBody Long productId){
+    public OrderDto order(@RequestBody OrderCommand.OrderProduct params){
+
+        return orderService.order(params);
     }
 }
