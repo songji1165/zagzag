@@ -8,7 +8,8 @@ public class CanNotUsedException extends ApiException {
     public CanNotUsedException(String message){
         super(message);
     }
-        public HttpStatus getStatus(){
+
+    public HttpStatus getStatus(){
             return HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         }
 }

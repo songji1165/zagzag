@@ -3,10 +3,7 @@ package com.jtrio.zagzag.review;
 import com.jtrio.zagzag.category.CategoryRepository;
 import com.jtrio.zagzag.exception.CanNotUsedException;
 import com.jtrio.zagzag.exception.NotFoundException;
-import com.jtrio.zagzag.model.Category;
-import com.jtrio.zagzag.model.Product;
-import com.jtrio.zagzag.model.Review;
-import com.jtrio.zagzag.model.User;
+import com.jtrio.zagzag.model.*;
 import com.jtrio.zagzag.order.OrderRepository;
 import com.jtrio.zagzag.product.ProductCommand;
 import com.jtrio.zagzag.product.ProductDto;
@@ -36,9 +33,10 @@ public class ReviewService {
         User user = userRepository.findByEmail(reviewCommand.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(reviewCommand.getProductId()).orElseThrow(()->new NotFoundException("존재하지 않는 상품입니다."));
 
-        if(orderRepository.existsByUserAndProduct(user, product)){
-            Review review = reviewCommand.toReview(user, product);
 
+        List<ProductOrder> order = orderRepository.findByUserAndProduct(user, product);
+        if(order.size() > 0){ //사용자가 상품을 주문한 이력이 있다.
+            Review review = reviewCommand.toReview(user, product);
             reviewRepository.save(review);
 
             return review.toReviewDto(reviewCommand.getUserId());
