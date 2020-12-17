@@ -52,4 +52,9 @@ public class OrderController {
         return orderService.findOrder(userId, startDt, endDt);
     }
 
+    @PutMapping("/{id}")
+    public OrderDto updateOrder(@PathVariable("id") Long id, @RequestBody OrderCommand.UpdateOrder updateOrder){
+        return orderService.updateOrder(id, updateOrder);
+    }
+
 }

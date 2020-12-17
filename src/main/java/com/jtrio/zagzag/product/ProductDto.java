@@ -14,8 +14,7 @@ public class ProductDto {
         private String image;
         private Byte productScore;
         private Byte deliveryScore;
-        private Long categoryId ;
-        private String categoryName ;
+        private Category category;
     }
 
     @Data
@@ -24,7 +23,6 @@ public class ProductDto {
         private String name;
         private Integer price;
         private String image;
-        private Long categoryId;
         private Category category;
     }
 

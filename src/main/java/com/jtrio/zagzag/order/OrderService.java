@@ -1,5 +1,7 @@
 package com.jtrio.zagzag.order;
 
+import com.jtrio.zagzag.enums.OrderStatus;
+import com.jtrio.zagzag.exception.MissParameterException;
 import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
@@ -45,18 +47,9 @@ public class OrderService {
     public OrderDto order(OrderCommand.OrderProduct params){
 //        User user = userSecurity.isUser(params.getUserId());
         User user = userRepository.findByEmail(params.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-        List<Long> productsId = params.getProducts();
-        List<Product> products = new ArrayList<>();
-        Integer totalPrice = 0;
+        Product product = productRepository.findById(params.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
 
-        for(Long id : productsId){
-            Product product = productRepository.findById(id).orElseThrow(()->new NotFoundException("해당 상품이 존재하지 않습니다."));
-            products.add(product);
-
-            totalPrice += product.getPrice();
-        }
-
-        ProductOrder order = params.toProductOrder(user, products, totalPrice);
+        ProductOrder order = params.toProductOrder(user, product);
 
         orderRepository.save(order);
 
@@ -65,21 +58,26 @@ public class OrderService {
 
     public List<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt){
         User user = userRepository.findByEmail(userId).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+
         List<ProductOrder> allProduts;
         List<OrderDto> productsDto = new ArrayList<>();
 
         if(startDt == null){ //전체조회 or 시작기간에러
-            if(endDt != null){ throw new IllegalArgumentException("시작기간을 선택해주세요."); }
+            if(endDt != null){ throw new MissParameterException("시작기간을 선택해주세요."); }
 
-            allProduts = orderRepository.findAll();
+            allProduts = orderRepository.findByUser(user);
 
         }else{//기간조회
+            /**
+             * 기간 조회 : user에 해당기간 내 order 조회 해야함 ! 완성 못함
+             *                  -> JPA 모르겟음 ..
+             * **/
             endDt = Optional.ofNullable(endDt).orElse(LocalDate.now());
 
             LocalDateTime start = startDt.atTime(20,16, 40, 1600);
             LocalDateTime end = endDt.atTime(20,16, 40, 1600);
 
-            allProduts = orderRepository.findByCreatedBetween(start, end);
+            allProduts = orderRepository.findByCreatedBetweenAndUser(start, end, user);
         }
 
         for(ProductOrder product : allProduts) {
@@ -88,5 +86,22 @@ public class OrderService {
         }
 
         return productsDto;
+    }
+
+    public OrderDto updateOrder(Long id, OrderCommand.UpdateOrder updateCommand){
+        User user = userRepository.findByEmail(updateCommand.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+
+        ProductOrder order = orderRepository.findById(id).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
+
+        if(order.getUser() == user){
+            orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
+
+            return order.toOrderDto();
+
+        }else{
+            throw new MissParameterException("해당 주문의 사용자가 맞는지 확인해주세요.");
+        }
+
+
     }
 }

@@ -21,18 +21,36 @@ public class OrderCommand {
         @NotBlank
         private String userId;
         @NotBlank
-        private List<Long> products;
+        private Long productId;
+        private Integer price;
         private OrderStatus status = OrderStatus.ORDER;
 
-        public ProductOrder toProductOrder(User user, List<Product> products, Integer price){
+        public ProductOrder toProductOrder(User user, Product product){
             ProductOrder order = new ProductOrder();
 
             order.setPrice(price);
             order.setStatus(status);
             order.setUser(user);
-            order.setProducts(products);
+            order.setProduct(product);
 
             return order;
+        }
+
+    }
+
+    @Data
+    public static class UpdateOrder{
+
+        @NotBlank
+        private String userId;
+        @NotBlank
+        private OrderStatus status;
+
+        public ProductOrder toProductOrder(ProductOrder productOrder, OrderStatus status){
+
+            productOrder.setStatus(status);
+
+            return productOrder;
         }
 
     }

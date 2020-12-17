@@ -44,8 +44,7 @@ public class Product {
         productDto.setImage(image);
         productDto.setProductScore(productScore);
         productDto.setDeliveryScore(deliveryScore);
-        productDto.setCategoryId(category.getId());
-        productDto.setCategoryName(category.getName());
+        productDto.setCategory(category);
 
         return productDto;
     }
