@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class OrderDto {
     private Long id;
-    private List<ProductDto.OrderProduct> products;
+    private ProductDto.OrderProduct product;
     private Integer totalPrice;
     private OrderStatus status;
     private LocalDateTime created;

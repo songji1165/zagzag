@@ -32,28 +32,21 @@ public class ProductOrder {
     @JoinColumn(name="user_id")
     private User user;
 //    @ManyToOne
-    @OneToMany
-    @JoinColumn(name="product_id")
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public OrderDto toOrderDto(){
+        ProductDto.OrderProduct productDto = new ProductDto.OrderProduct();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setPrice(product.getPrice());
+        productDto.setImage(product.getImage());
+        productDto.setCategory(product.getCategory());
+
         OrderDto orderDto = new OrderDto();
-
-        List<ProductDto.OrderProduct> productsList = new ArrayList<>();
-        for(Product product : products){
-            ProductDto.OrderProduct orderProduct = new ProductDto.OrderProduct();
-
-            orderProduct.setId(product.getId());
-            orderProduct.setName(product.getName());
-            orderProduct.setPrice(product.getPrice());
-            orderProduct.setImage(product.getImage());
-            orderProduct.setCategory(product.getCategory());
-
-            productsList.add(orderProduct);
-        }
-
         orderDto.setId(id);
-        orderDto.setProducts(productsList);
+        orderDto.setProduct(productDto);
         orderDto.setTotalPrice(price);
         orderDto.setStatus(status);
         orderDto.setCreated(created);
