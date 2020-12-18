@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -43,22 +44,15 @@ public class ProductService  {
         return product.toProductDto();
     }
 
-    public void updateProductScore(Product product){
+    public void updateScore(Product product){
         List<Review> reviews = reviewRepository.findByProduct(product);
 
         CommonUtils commonUtils = new CommonUtils();
-        byte score = commonUtils.averageScore(reviews);
+        HashMap<String, Byte> score = commonUtils.averageScore(reviews);
 
-        product.setProductScore(score);
+        product.setProductScore(score.get("product"));
+        product.setDeliveryScore(score.get("delivery"));
+
+        productRepository.save(product);
     }
-
-    public void updateDeliveryScore(Product product){
-        List<Review> reviews = reviewRepository.findByProduct(product);
-
-        CommonUtils commonUtils = new CommonUtils();
-        byte score = commonUtils.averageScore(reviews);
-
-        product.setDeliveryScore(score);
-    }
-
 }

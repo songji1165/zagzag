@@ -37,7 +37,7 @@ public class OrderController {
 
     @PostMapping
     public OrderDto createOrder(@RequestBody OrderCommand.OrderProduct params){
-        return orderService.order(params);
+        return orderService.createOrder(params);
     }
 
     @GetMapping

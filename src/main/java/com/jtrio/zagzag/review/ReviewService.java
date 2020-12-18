@@ -48,8 +48,7 @@ public class ReviewService {
             reviewRepository.save(review);
 
             //리뷰 완료되면, 상품의 score 업데이트하기
-            productService.updateProductScore(review.getProduct());
-            productService.updateDeliveryScore(review.getProduct());
+            productService.updateScore(review.getProduct());
 
             return review.toReviewDto(reviewCommand.getUserEmail());
 

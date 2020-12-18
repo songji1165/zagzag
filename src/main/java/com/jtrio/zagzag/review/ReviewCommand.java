@@ -17,11 +17,11 @@ public class ReviewCommand {
     public static class createReview {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
-        @Max(10)
         @Min(2)
+        @Max(10)
         private byte productScore;
-        @Max(10)
         @Min(2)
+        @Max(10)
         private byte deliveryScore;
         @Email
         private String userEmail;
