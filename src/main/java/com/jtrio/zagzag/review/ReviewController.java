@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
     private final ReviewService reviewService;
     @PostMapping
-    public ReviewDto postReview(@RequestBody ReviewCommand.PostReview review){
-        return reviewService.postReview(review);
+    public ReviewDto createReview(@RequestBody ReviewCommand.createReview review){
+        return reviewService.createReview(review);
     }
 }

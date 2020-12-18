@@ -50,11 +50,4 @@ public class UserCommand {
             return user;
         }
     }
-
-    @Data
-    public static class CheckUser {
-        private String name;
-        private String email;
-    }
-
 }

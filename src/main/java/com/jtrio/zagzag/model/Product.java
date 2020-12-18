@@ -21,8 +21,8 @@ public class Product {
     private String name;
     private Integer price;
     private String image;
-    private Byte productScore;
-    private Byte deliveryScore;
+    private byte productScore;
+    private byte deliveryScore;
 
     @ManyToOne
     @JoinColumn(name="category_id")

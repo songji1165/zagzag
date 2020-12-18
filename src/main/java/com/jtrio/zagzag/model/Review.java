@@ -20,8 +20,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    private Byte productScore;
-    private Byte deliveryScore;
+    private byte productScore;
+    private byte deliveryScore;
     @ManyToMany
     private List<User> likers = new ArrayList<>();
     @CreatedDate

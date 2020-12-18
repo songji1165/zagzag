@@ -12,13 +12,13 @@ public class ProductDto {
         private String name;
         private Integer price;
         private String image;
-        private Byte productScore;
-        private Byte deliveryScore;
+        private byte productScore;
+        private byte deliveryScore;
         private Category category;
     }
 
     @Data
-    public static class OrderProduct{
+    public static class OrderProductDto{
         private Long id;
         private String name;
         private Integer price;

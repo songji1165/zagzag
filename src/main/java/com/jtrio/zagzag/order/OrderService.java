@@ -1,28 +1,18 @@
 package com.jtrio.zagzag.order;
 
-import com.jtrio.zagzag.enums.OrderStatus;
-import com.jtrio.zagzag.exception.MissParameterException;
+import com.jtrio.zagzag.exception.ParameterMissedException;
 import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.User;
-import com.jtrio.zagzag.product.ProductCommand;
 import com.jtrio.zagzag.product.ProductRepository;
-import com.jtrio.zagzag.security.UserSecurity;
-import com.jtrio.zagzag.user.UserCommand;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Order;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final UserRepository userRepository;
-    private final UserSecurity userSecurity;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
@@ -45,8 +34,8 @@ public class OrderService {
      *
      * */
     public OrderDto order(OrderCommand.OrderProduct params){
-//        User user = userSecurity.isUser(params.getUserId());
-        User user = userRepository.findByEmail(params.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+
+        User user = userRepository.findByEmail(params.getUserEmail()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(params.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
 
         ProductOrder order = params.toProductOrder(user, product);
@@ -63,7 +52,7 @@ public class OrderService {
         List<OrderDto> productsDto = new ArrayList<>();
 
         if(startDt == null){ //전체조회 or 시작기간에러
-            if(endDt != null){ throw new MissParameterException("시작기간을 선택해주세요."); }
+            if(endDt != null){ throw new ParameterMissedException("시작기간을 선택해주세요."); }
 
             allProduts = orderRepository.findByUser(user);
 
@@ -99,7 +88,7 @@ public class OrderService {
             return order.toOrderDto();
 
         }else{
-            throw new MissParameterException("해당 주문의 사용자가 맞는지 확인해주세요.");
+            throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
         }
 
 
