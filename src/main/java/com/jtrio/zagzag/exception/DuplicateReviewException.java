@@ -2,9 +2,9 @@ package com.jtrio.zagzag.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class MissParameterException extends ApiException {
+public class DuplicateReviewException extends ApiException {
 
-    public MissParameterException(String message){
+    public DuplicateReviewException(String message){
         super(message);
     }
 

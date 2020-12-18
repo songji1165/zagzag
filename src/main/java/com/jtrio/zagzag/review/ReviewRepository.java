@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.review;
 
+import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.Review;
 import com.jtrio.zagzag.model.User;
@@ -11,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-
-
+    boolean existsByUserAndProduct(User user, Product product);
+    List<Review> findByProduct(Product product);
 }

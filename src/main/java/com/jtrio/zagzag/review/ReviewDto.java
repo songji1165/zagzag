@@ -13,8 +13,8 @@ import java.util.List;
 public class ReviewDto {
     private Long id;
     private String content;
-    private Byte productScore;
-    private Byte deliveryScore;
+    private byte productScore;
+    private byte deliveryScore;
     private Integer likers; //리스트 갯수
     private LocalDateTime created;
     private LocalDateTime updated;

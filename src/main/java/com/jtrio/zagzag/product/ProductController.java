@@ -33,9 +33,8 @@ public class ProductController {
      *   + requestBody command로 받는게 좋다 .?
     **/
     @PostMapping
-    public ProductDto.CreateProductDto addProduct(@RequestBody ProductCommand.CreateProduct product){
-//    public ProductDto addProduct(@RequestBody Map<String, Object> param){
-        return productService.addProduct(product);
+    public ProductDto.CreateProductDto createProduct(@RequestBody ProductCommand.CreateProduct product){
+        return productService.createProduct(product);
     }
 
 }

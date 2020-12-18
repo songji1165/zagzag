@@ -14,13 +14,13 @@ public class ProductCommand {
 
     @Data
     public static class CreateProduct {
-        @NotBlank
+        @NotBlank(message = "상품명을 입력해주세요.")
         private String name;
-        @NotBlank
+        @NotBlank(message = "판매가격을 입력해주세요.")
         private Integer price;
+        @NotBlank(message = "상품이미지를 입력해주세요.")
         private String image;
-        private Byte productScore;
-        private Byte deliveryScore;
+        @NotBlank(message = "상품의 카테고리를 입력해주세요.")
         private Long categoryId;
 
         public Product toProduct(Category category){
@@ -29,8 +29,6 @@ public class ProductCommand {
             product.setName(name);
             product.setPrice(price);
             product.setImage(image);
-            product.setProductScore(productScore);
-            product.setDeliveryScore(deliveryScore);
             product.setCategory(category);
 
             return product;
@@ -39,6 +37,14 @@ public class ProductCommand {
 
     @Data
     public static class SelectProduct {
+        @NotBlank
+        private String name;
+        @NotBlank
+        private Integer price;
+    }
+
+    @Data
+    public static class UpdateProductScore {
         @NotBlank
         private String name;
         @NotBlank

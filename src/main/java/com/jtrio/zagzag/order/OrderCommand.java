@@ -9,6 +9,7 @@ import com.jtrio.zagzag.user.UserCommand;
 import lombok.Data;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,9 +19,9 @@ public class OrderCommand {
     @Data
     public static class OrderProduct{
 
-        @NotBlank
-        private String userId;
-        @NotBlank
+        @Email
+        private String userEmail;
+        @NotBlank(message = "상품을 선택해주세요.")
         private Long productId;
         private Integer price;
         private OrderStatus status = OrderStatus.ORDER;

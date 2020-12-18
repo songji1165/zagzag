@@ -36,8 +36,7 @@ public class OrderController {
     * */
 
     @PostMapping
-//    public OrderDto order(@RequestBody UserCommand.CheckUser user, @RequestBody Long productId){
-    public OrderDto order(@RequestBody OrderCommand.OrderProduct params){
+    public OrderDto createOrder(@RequestBody OrderCommand.OrderProduct params){
         return orderService.order(params);
     }
 

@@ -37,7 +37,7 @@ public class ProductOrder {
     private Product product;
 
     public OrderDto toOrderDto(){
-        ProductDto.OrderProduct productDto = new ProductDto.OrderProduct();
+        ProductDto.OrderProductDto productDto = new ProductDto.OrderProductDto();
         productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
