@@ -40,7 +40,8 @@ public class ReviewService {
         List<ProductOrder> order = orderRepository.findByUserAndProduct(user, product);
         if(order.size() > 0){ //사용자가 상품을 주문한 이력이 있다.
 
-            if(reviewRepository.existsByUserAndProduct(user, product)){//리뷰는 주문 한 개당 한 개만
+            if(reviewRepository.existsByUserAndProduct(user, product)){
+                //리뷰는 주문 한개 당 리뷰 한 개
                 throw new DuplicateReviewException("리뷰는 한 개만 입력할 수 있습니다.");
             }
 
@@ -50,7 +51,7 @@ public class ReviewService {
             //리뷰 완료되면, 상품의 score 업데이트하기
             productService.updateScore(review.getProduct());
 
-            return review.toReviewDto(reviewCommand.getUserEmail());
+            return ReviewDto.toReviewDto(review);
 
         }else{
             throw new NonPurchaseException("구매한 상품에만 리뷰를 입력할 수 있습니다.");

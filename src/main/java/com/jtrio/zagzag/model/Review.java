@@ -35,19 +35,4 @@ public class Review {
     @ManyToOne
     @JoinColumn(name="product_id")
     private Product product;
-
-    public ReviewDto toReviewDto(String userId){
-        ReviewDto reviewDto = new ReviewDto();
-
-        reviewDto.setId(id);
-        reviewDto.setContent(content);
-        reviewDto.setProductScore(productScore);
-        reviewDto.setDeliveryScore(deliveryScore);
-        reviewDto.setLikers(likers.size());
-        reviewDto.setCreated(created);
-        reviewDto.setUpdated(updated);
-        reviewDto.setUserId(userId);
-
-        return reviewDto;
-    }
 }

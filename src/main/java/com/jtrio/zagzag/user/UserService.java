@@ -30,7 +30,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        UserDto userDto = savedUser.toUserDto();
+        UserDto userDto = UserDto.toUserDto(savedUser);
 
         return userDto;
     }
@@ -40,7 +40,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         userRepository.save(command.toUser(user));
-        return user.toUserDto();
+        return UserDto.toUserDto(user);
     }
 
 }

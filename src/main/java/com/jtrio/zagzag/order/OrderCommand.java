@@ -10,6 +10,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -23,6 +24,7 @@ public class OrderCommand {
         private String userEmail;
         @NotBlank(message = "상품을 선택해주세요.")
         private Long productId;
+        @Min(0)
         private Integer price;
         private OrderStatus status = OrderStatus.ORDER;
 
