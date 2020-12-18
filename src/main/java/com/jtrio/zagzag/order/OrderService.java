@@ -42,7 +42,7 @@ public class OrderService {
 
         orderRepository.save(productOrder);
 
-        return productOrder.toOrderDto();
+        return OrderDto.toOrderDto(productOrder);
     }
 
     public List<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt){
@@ -69,8 +69,8 @@ public class OrderService {
             allProduts = orderRepository.findByCreatedBetweenAndUser(start, end, user);
         }
 
-        for(ProductOrder product : allProduts) {
-            OrderDto order = product.toOrderDto();
+        for(ProductOrder productOrder : allProduts) {
+            OrderDto order = OrderDto.toOrderDto(productOrder);
             productsDto.add(order);
         }
 
@@ -85,7 +85,7 @@ public class OrderService {
         if(order.getUser() == user){
             orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
 
-            return order.toOrderDto();
+            return OrderDto.toOrderDto(order);
 
         }else{
             throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");

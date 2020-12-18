@@ -6,10 +6,7 @@ import com.jtrio.zagzag.model.Review;
 import com.jtrio.zagzag.model.User;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 public class ReviewCommand {
 
@@ -17,11 +14,9 @@ public class ReviewCommand {
     public static class createReview {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
-        @Min(2)
-        @Max(10)
+        @Size(min=2, max=10)
         private byte productScore;
-        @Min(2)
-        @Max(10)
+        @Size(min=2, max=10)
         private byte deliveryScore;
         @Email
         private String userEmail;

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class ProductCommand {
     public static class CreateProduct {
         @NotBlank(message = "상품명을 입력해주세요.")
         private String name;
-        @NotBlank(message = "판매가격을 입력해주세요.")
+        @Min(0)
         private Integer price;
         @NotBlank(message = "상품이미지를 입력해주세요.")
         private String image;

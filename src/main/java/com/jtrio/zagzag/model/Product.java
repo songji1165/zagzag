@@ -36,17 +36,17 @@ public class Product {
     @LastModifiedDate
     private LocalDateTime updated;
 
-    public CreateProductDto toProductDto(){
-        CreateProductDto productDto= new CreateProductDto();
-
-        productDto.setName(name);
-        productDto.setPrice(price);
-        productDto.setImage(image);
-        productDto.setProductScore(productScore);
-        productDto.setDeliveryScore(deliveryScore);
-        productDto.setCategory(category);
-
-        return productDto;
-    }
+//    public CreateProductDto toProductDto(){
+//        CreateProductDto productDto= new CreateProductDto();
+//
+//        productDto.setName(name);
+//        productDto.setPrice(price);
+//        productDto.setImage(image);
+//        productDto.setProductScore(productScore);
+//        productDto.setDeliveryScore(deliveryScore);
+//        productDto.setCategory(category);
+//
+//        return productDto;
+//    }
 
 }
