@@ -33,16 +33,16 @@ public class OrderService {
      *  대체 : user정보가 등록된 user인지 확인하기
      *
      * */
-    public OrderDto order(OrderCommand.OrderProduct params){
+    public OrderDto createOrder(OrderCommand.OrderProduct params){
 
         User user = userRepository.findByEmail(params.getUserEmail()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(params.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
 
-        ProductOrder order = params.toProductOrder(user, product);
+        ProductOrder productOrder = params.toProductOrder(user, product);
 
-        orderRepository.save(order);
+        orderRepository.save(productOrder);
 
-        return order.toOrderDto();
+        return productOrder.toOrderDto();
     }
 
     public List<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt){

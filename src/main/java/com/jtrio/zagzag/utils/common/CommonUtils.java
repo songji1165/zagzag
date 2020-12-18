@@ -2,20 +2,30 @@ package com.jtrio.zagzag.utils.common;
 
 import com.jtrio.zagzag.model.Review;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommonUtils {
 
-    public byte averageScore(List<Review> reviews) {
-        int sumScore = 0;
+    public HashMap<String, Byte> averageScore(List<Review> reviews) {
+        int sumProductScore = 0;
+        int sumDeliveryScore = 0;
 
         for(Review review : reviews){
             byte productScore = review.getProductScore();
-            sumScore += productScore;
+            byte deliveryScore = review.getDeliveryScore();
+            sumProductScore += productScore;
+            sumDeliveryScore += deliveryScore;
         }
 
-        int prodcutScore = sumScore/reviews.size();
+        int prodcutScore = sumProductScore/reviews.size();
+        int deliveryScore = sumDeliveryScore/reviews.size();
 
-        return (byte) prodcutScore;
+        HashMap<String, Byte> score = new HashMap<>();
+
+        score.put("product",(byte) prodcutScore);
+        score.put("delivery",(byte) deliveryScore);
+        return score;
     }
 }
