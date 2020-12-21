@@ -1,9 +1,6 @@
 package com.jtrio.zagzag.review;
 
-import com.jtrio.zagzag.model.Category;
-import com.jtrio.zagzag.model.Product;
-import com.jtrio.zagzag.model.Review;
-import com.jtrio.zagzag.model.User;
+import com.jtrio.zagzag.model.*;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -22,8 +19,10 @@ public class ReviewCommand {
         private String userEmail;
         @NotBlank(message = "상품을 선택해주세요")
         private Long productId;
+        @NotBlank(message = "주문내역을 선택해주세요.")
+        private Long orderId;
 
-        public Review toReview(User user, Product product){
+        public Review toReview(User user, Product product, ProductOrder order){
             Review review = new Review();
 
             review.setContent(content);
@@ -31,6 +30,7 @@ public class ReviewCommand {
             review.setDeliveryScore(deliveryScore);
             review.setUser(user);
             review.setProduct(product);
+            review.setOrder(order);
 
             return review;
         }

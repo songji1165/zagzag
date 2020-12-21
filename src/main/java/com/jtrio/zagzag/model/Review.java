@@ -22,6 +22,7 @@ public class Review {
     private String content;
     private byte productScore;
     private byte deliveryScore;
+
     @ManyToMany
     private List<User> likers = new ArrayList<>();
     @CreatedDate
@@ -35,4 +36,8 @@ public class Review {
     @ManyToOne
     @JoinColumn(name="product_id")
     private Product product;
+
+    @OneToOne
+    @JoinColumn(name="order_id")
+    private ProductOrder order;
 }
