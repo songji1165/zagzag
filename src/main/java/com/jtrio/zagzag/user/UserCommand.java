@@ -45,8 +45,14 @@ public class UserCommand {
         private String addr;
 
         public User toUser(User user){
-            user.setName(name);
-            user.setAddr(addr);
+            if(name != null){
+                user.setName(name);
+            }
+
+            if(addr != null){
+                user.setAddr(addr);
+            }
+
             return user;
         }
     }
