@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    boolean existsByUserAndProduct(User user, Product product);
+    boolean existsByOrder(ProductOrder order);
     List<Review> findByProduct(Product product);
     List<Review> findByUserAndProduct(User user, Product product);
 }
