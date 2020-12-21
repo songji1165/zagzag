@@ -37,13 +37,10 @@ public class ReviewService {
         Product product = productRepository.findById(reviewCommand.getProductId()).orElseThrow(()->new NotFoundException("존재하지 않는 상품입니다."));
 
 
-        List<ProductOrder> order = orderRepository.findByUserAndProduct(user, product);
-        if(order.size() > 0){ //사용자가 상품을 주문한 이력이 있다.
+        List<ProductOrder> orders = orderRepository.findByUserAndProduct(user, product); // 주문리스트 (사용자, 상품 조회)
+        List<Review> reviews = reviewRepository.findByUserAndProduct(user, product);  // 리뷰리스트
 
-            if(reviewRepository.existsByUserAndProduct(user, product)){
-                //리뷰는 주문 한개 당 리뷰 한 개
-                throw new DuplicateReviewException("리뷰는 한 개만 입력할 수 있습니다.");
-            }
+        if(orders.size() > 0 && orders.size() > reviews.size()){
 
             Review review = reviewCommand.toReview(user, product);
             reviewRepository.save(review);
@@ -53,8 +50,17 @@ public class ReviewService {
 
             return ReviewDto.toReviewDto(review);
 
-        }else{
-            throw new NonPurchaseException("구매한 상품에만 리뷰를 입력할 수 있습니다.");
+        }else {
+            throw new DuplicateReviewException("리뷰는 주문 건당 한 개만 입력할 수 있습니다.");
+
         }
+
+
+//            if(reviewRepository.existsByUserAndProduct(user, product)){
+//                //리뷰는 주문 한개 당 리뷰 한 개
+//                throw new DuplicateReviewException("리뷰는 한 개만 입력할 수 있습니다.");
+//        }else{
+//            throw new NonPurchaseException("구매한 상품에만 리뷰를 입력할 수 있습니다.");
+//        }
     }
 }
