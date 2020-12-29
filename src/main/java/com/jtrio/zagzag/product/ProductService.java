@@ -10,8 +10,8 @@ import com.jtrio.zagzag.utils.common.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.awt.print.Pageable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +24,11 @@ public class ProductService  {
     private final CategoryRepository categoryRepository;
     private final ReviewRepository reviewRepository;
 
-    public Page<ProductDto.CreateProductDto> getProducts(long categoryId, Integer page, Integer size){
+    public Page<ProductDto.CreateProductDto> getProducts(long categoryId, Pageable pageable){
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
-        PageRequest pageable = PageRequest.of(page, size);
+//        PageRequest pageable = PageRequest.of(page, size);
 
         Page<Product> products = productRepository.findAllByCategory(category, pageable);
 
