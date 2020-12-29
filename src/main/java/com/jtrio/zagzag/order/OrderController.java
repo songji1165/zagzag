@@ -5,9 +5,6 @@ import com.jtrio.zagzag.product.ProductCommand;
 import com.jtrio.zagzag.product.ProductDto;
 import com.jtrio.zagzag.user.UserCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,15 +41,14 @@ public class OrderController {
     }
 
     @GetMapping
-    public Page<OrderDto> findOrder(
+    public List<OrderDto> findOrder(
             @RequestParam(value = "userid") String userId,
             @RequestParam(value = "startdt", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDt,
             @RequestParam(value="enddt", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDt,
-            @PageableDefault() Pageable pageable
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDt
     ){
-        return orderService.findOrder(userId, startDt, endDt, pageable);
+        return orderService.findOrder(userId, startDt, endDt);
     }
 
     @PutMapping("/{id}")

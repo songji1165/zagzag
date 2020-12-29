@@ -4,9 +4,6 @@ import com.jtrio.zagzag.model.Category;
 import com.jtrio.zagzag.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +20,10 @@ public class ProductController {
     @GetMapping
     public Page<ProductDto.CreateProductDto> getProducts(
             @RequestParam(value = "category", required = true) Long categoryId,
-            @PageableDefault Pageable pageable
-//            @RequestParam(value = "page", defaultValue = "1") Integer page,
-//            @RequestParam(value = "size", defaultValue = "5") Integer size
-    ){
-        //클라이언트에서 보내는 page는 1부터
-        return productService.getProducts(categoryId, pageable);
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "5") Integer size){
+        //클라이언트에서 보내는 page는 1부터라고 가정한다.
+        return productService.getProducts(categoryId, page-1, size);
     }
 
     /**
