@@ -8,6 +8,8 @@ import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.product.ProductRepository;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,36 +47,27 @@ public class OrderService {
         return OrderDto.toOrderDto(productOrder);
     }
 
-    public List<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt){
+    public Page<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt, Pageable pageable){
         User user = userRepository.findByEmail(userId).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
-        List<ProductOrder> allProduts;
         List<OrderDto> productsDto = new ArrayList<>();
 
-        if(startDt == null){ //전체조회 or 시작기간에러
-            if(endDt != null){ throw new ParameterMissedException("시작기간을 선택해주세요."); }
+        // 시작기간에러 // 전체조회 => 데이터가 많은 경우, 메모리 문제가 생길 수 있음!
+        if(startDt == null && endDt != null) throw new ParameterMissedException("시작기간을 선택해주세요.");
 
-            allProduts = orderRepository.findByUser(user);
+        endDt = Optional.ofNullable(endDt).orElse(LocalDate.now());
 
-        }else{//기간조회
-            /**
-             * 기간 조회 : user에 해당기간 내 order 조회 해야함 ! 완성 못함
-             *                  -> JPA 모르겟음 ..
-             * **/
-            endDt = Optional.ofNullable(endDt).orElse(LocalDate.now());
+        LocalDateTime start = startDt.atTime(20,16, 40, 1600);
+        LocalDateTime end = endDt.atTime(20,16, 40, 1600);
 
-            LocalDateTime start = startDt.atTime(20,16, 40, 1600);
-            LocalDateTime end = endDt.atTime(20,16, 40, 1600);
+        System.out.println(startDt+"======start====== : " + start);
+        System.out.println(endDt+"======end====== : " + end);
 
-            allProduts = orderRepository.findByCreatedBetweenAndUser(start, end, user);
-        }
+        Page<ProductOrder> products = orderRepository.findByCreatedBetweenAndUser(start, end, user, pageable);
 
-        for(ProductOrder productOrder : allProduts) {
-            OrderDto order = OrderDto.toOrderDto(productOrder);
-            productsDto.add(order);
-        }
+        Page<OrderDto> orderDto = products.map(product -> OrderDto.toOrderDto(product));
 
-        return productsDto;
+        return orderDto;
     }
 
     public OrderDto updateOrder(Long id, OrderCommand.UpdateOrder updateCommand){

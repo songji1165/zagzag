@@ -11,9 +11,9 @@ public class ReviewCommand {
     public static class createReview {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
-        @Size(min=2, max=10)
+        @Size(min=0, max=10)
         private byte productScore;
-        @Size(min=2, max=10)
+        @Size(min=0, max=10)
         private byte deliveryScore;
         @Email
         private String userEmail;
