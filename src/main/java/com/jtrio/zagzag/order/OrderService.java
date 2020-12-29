@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +36,7 @@ public class OrderService {
      *  대체 : user정보가 등록된 user인지 확인하기
      *
      * */
+    @Transactional
     public OrderDto createOrder(OrderCommand.OrderProduct params){
 
         User user = userRepository.findByEmail(params.getUserEmail()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
@@ -70,6 +72,7 @@ public class OrderService {
         return orderDto;
     }
 
+    @Transactional
     public OrderDto updateOrder(Long id, OrderCommand.UpdateOrder updateCommand){
         User user = userRepository.findByEmail(updateCommand.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 

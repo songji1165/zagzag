@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class ProductService  {
         return produtsDto;
     }
 
+    @Transactional
     public ProductDto.CreateProductDto createProduct(ProductCommand.CreateProduct productCommand){
         Category category = categoryRepository.findById(productCommand.getCategoryId()).orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
@@ -46,6 +48,7 @@ public class ProductService  {
         return ProductDto.CreateProductDto.toProductDto(product);
     }
 
+    @Transactional
     public void updateScore(Product product){
         List<Review> reviews = reviewRepository.findByProduct(product);
 
