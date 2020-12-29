@@ -13,6 +13,7 @@ import com.jtrio.zagzag.product.ProductService;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.RuntimeMBeanException;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public ReviewDto createReview(ReviewCommand.createReview reviewCommand){
         /**
          * 1. user Security
@@ -39,16 +41,6 @@ public class ReviewService {
 
         List<ProductOrder> orders = orderRepository.findByUserAndProduct(user, product); // 주문리스트 (사용자, 상품 조회)
         List<Review> reviews = reviewRepository.findByUserAndProduct(user, product);  // 리뷰리스트
-
-//        if(orders.size() > 0 && orders.size() > reviews.size()){
-//
-//
-//
-//        }else {
-//            throw new DuplicateReviewException("리뷰는 주문 건당 한 개만 입력할 수 있습니다.");
-//
-//        }
-
 
         if(reviewRepository.existsByOrder(order)){//리뷰는 주문 한개 당 리뷰 한 개
             throw new DuplicateReviewException("리뷰는 주문 건당 한 개만 입력할 수 있습니다.");
