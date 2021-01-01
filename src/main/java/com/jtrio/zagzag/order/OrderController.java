@@ -47,9 +47,9 @@ public class OrderController {
     public Page<OrderDto> findOrder(
             @RequestParam(value = "userid") String userId,
             @RequestParam(value = "startdt", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDt,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDt,
             @RequestParam(value="enddt", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDt,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDt,
             @PageableDefault() Pageable pageable
     ){
         return orderService.findOrder(userId, startDt, endDt, pageable);
