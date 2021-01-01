@@ -59,8 +59,8 @@ public class OrderService {
 
         endDt = Optional.ofNullable(endDt).orElse(LocalDate.now());
 
-        LocalDateTime start = startDt.atTime(20,16, 40, 1600);
-        LocalDateTime end = endDt.atTime(20,16, 40, 1600);
+        LocalDateTime start = startDt.atTime(0,0,0);
+        LocalDateTime end = endDt.atTime(0,0,0);
 
         System.out.println(startDt+"======start====== : " + start);
         System.out.println(endDt+"======end====== : " + end);
