@@ -28,11 +28,11 @@ public class Product {
     @JoinColumn(name="category_id")
     private Category category;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime created;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updated;
 

@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +17,6 @@ import java.time.LocalDateTime;
 @Data //getter setter 
 @EntityListeners(value = {AuditingEntityListener.class})
 public class User {
-    public String getEmail;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//sql에서 자동생성되도록!
     private Long id;
@@ -27,8 +27,10 @@ public class User {
     private String addr;
     private UserRole role = UserRole.USER;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime created;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updated;
 

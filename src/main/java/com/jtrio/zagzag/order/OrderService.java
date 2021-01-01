@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,23 +50,19 @@ public class OrderService {
         return OrderDto.toOrderDto(productOrder);
     }
 
-    public Page<OrderDto> findOrder(String userId, LocalDate startDt, LocalDate endDt, Pageable pageable){
+    public Page<OrderDto> findOrder(String userId, LocalDate startDt, Pageable pageable){
         User user = userRepository.findByEmail(userId).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         List<OrderDto> productsDto = new ArrayList<>();
 
         // 시작기간에러 // 전체조회 => 데이터가 많은 경우, 메모리 문제가 생길 수 있음!
-        if(startDt == null && endDt != null) throw new ParameterMissedException("시작기간을 선택해주세요.");
+        if(startDt == null) throw new ParameterMissedException("시작기간을 선택해주세요.");
 
-        endDt = Optional.ofNullable(endDt).orElse(LocalDate.now());
-
-        LocalDateTime start = startDt.atTime(0,0,0);
-        LocalDateTime end = endDt.atTime(0,0,0);
+        LocalDateTime start = startDt.atStartOfDay();
 
         System.out.println(startDt+"======start====== : " + start);
-        System.out.println(endDt+"======end====== : " + end);
 
-        Page<ProductOrder> products = orderRepository.findByCreatedBetweenAndUser(start, end, user, pageable);
+        Page<ProductOrder> products = orderRepository.findByCreatedGreaterThanAndUser(start, user, pageable);
 
         Page<OrderDto> orderDto = products.map(product -> OrderDto.toOrderDto(product));
 

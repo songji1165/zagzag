@@ -6,7 +6,6 @@ import com.jtrio.zagzag.model.Category;
 import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.Review;
 import com.jtrio.zagzag.review.ReviewRepository;
-import com.jtrio.zagzag.utils.common.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,13 +49,11 @@ public class ProductService  {
 
     @Transactional
     public void updateScore(Product product){
-        List<Review> reviews = reviewRepository.findByProduct(product);
+        Byte productScore = reviewRepository.avgByProductScore(product);
+        Byte deliveryScore = reviewRepository.avgByDeliveryScore(product);
 
-        CommonUtils commonUtils = new CommonUtils();
-        HashMap<String, Byte> score = commonUtils.averageScore(reviews);
-
-        product.setProductScore(score.get("product"));
-        product.setDeliveryScore(score.get("delivery"));
+        product.setProductScore(productScore);
+        product.setDeliveryScore(deliveryScore);
 
         productRepository.save(product);
     }

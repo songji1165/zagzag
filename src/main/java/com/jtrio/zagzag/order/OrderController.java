@@ -48,11 +48,9 @@ public class OrderController {
             @RequestParam(value = "userid") String userId,
             @RequestParam(value = "startdt", required = false)
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDt,
-            @RequestParam(value="enddt", required = false)
-            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDt,
             @PageableDefault() Pageable pageable
     ){
-        return orderService.findOrder(userId, startDt, endDt, pageable);
+        return orderService.findOrder(userId, startDt, pageable);
     }
 
     @PutMapping("/{id}")
