@@ -10,6 +10,7 @@ import com.jtrio.zagzag.product.ProductCommand;
 import com.jtrio.zagzag.product.ProductDto;
 import com.jtrio.zagzag.product.ProductRepository;
 import com.jtrio.zagzag.product.ProductService;
+import com.jtrio.zagzag.security.SecurityUser;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,13 @@ public class ReviewService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReviewDto createReview(ReviewCommand.createReview reviewCommand){
+    public ReviewDto createReview(SecurityUser securityUser, ReviewCommand.createReview reviewCommand){
         /**
          * 1. user Security
          * 2. product 확인
          * 3. user가 구매자인지 확인
          * */
-        User user = userRepository.findByEmail(reviewCommand.getUserEmail()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+        User user = securityUser.getUser();
         Product product = productRepository.findById(reviewCommand.getProductId()).orElseThrow(()->new NotFoundException("존재하지 않는 상품입니다."));
         ProductOrder order = orderRepository.findById(reviewCommand.getOrderId()).orElseThrow(()->new NonPurchaseException("주문번호를 확인해주세요."));
 

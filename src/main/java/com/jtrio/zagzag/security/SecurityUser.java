@@ -19,9 +19,7 @@ import java.util.List;
 public class SecurityUser implements UserDetails {
     private static final String ROLE_PREFIX = "ROLE_"; //security 권한자의 필수 명
 
-    private final User userDetail;
-
-    private User user;
+    private final User user;
 
     //접근 권한 부여
     public Collection<? extends GrantedAuthority> getAuthorities(){

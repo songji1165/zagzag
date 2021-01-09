@@ -2,9 +2,11 @@ package com.jtrio.zagzag.user;
 
 import com.jtrio.zagzag.exception.DuplicateEmailException;
 import com.jtrio.zagzag.exception.NotFoundException;
+import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,14 +28,19 @@ public class UserController {
        return userService.joinUser(user);
    }
 
+   @GetMapping("/me")
+   public String readUser(@AuthenticationPrincipal SecurityUser securityUser){
+       return securityUser.getUsername();
+   }
+
     @GetMapping("/duplicate-email")
     public boolean getUserEmail(String email){
        return userService.findUserEmail(email);
     }
 
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable("id") Long id, @RequestBody UserCommand.UpdateUser user) {
-        return userService.updateUser(id, user);
+    public UserDto updateUser(@AuthenticationPrincipal SecurityUser securityUser, @RequestBody UserCommand.UpdateUser user) {
+        return userService.updateUser(securityUser, user);
     }
 
 }

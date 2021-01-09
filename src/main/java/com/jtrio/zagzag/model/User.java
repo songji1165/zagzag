@@ -25,6 +25,7 @@ public class User {
     private String name;
     private Gender gender;
     private String addr;
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

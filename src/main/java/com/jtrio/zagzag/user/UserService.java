@@ -3,7 +3,9 @@ package com.jtrio.zagzag.user;
 import com.jtrio.zagzag.exception.DuplicateEmailException;
 import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.User;
+import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public boolean findUserEmail(String email){
         return userRepository.existsByEmail(email);
@@ -30,18 +33,16 @@ public class UserService {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
 
+        user.setPass(passwordEncoder.encode(user.getPass()));
         User savedUser = userRepository.save(user);
 
         UserDto userDto = UserDto.toUserDto(savedUser);
-
         return userDto;
     }
 
     @Transactional
-    public UserDto updateUser(Long id, UserCommand.UpdateUser command){
-
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-
+    public UserDto updateUser(SecurityUser securityUser, UserCommand.UpdateUser command){
+        User user = securityUser.getUser();
         userRepository.save(command.toUser(user));
         return UserDto.toUserDto(user);
     }

@@ -6,6 +6,7 @@ import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.product.ProductRepository;
+import com.jtrio.zagzag.security.SecurityUser;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,9 +39,8 @@ public class OrderService {
      *
      * */
     @Transactional
-    public OrderDto createOrder(OrderCommand.OrderProduct params){
-
-        User user = userRepository.findByEmail(params.getUserEmail()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+    public OrderDto createOrder(SecurityUser securityUser, OrderCommand.OrderProduct params){
+        User user = securityUser.getUser();
         Product product = productRepository.findById(params.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
 
         ProductOrder productOrder = params.toProductOrder(user, product);
@@ -50,17 +50,13 @@ public class OrderService {
         return OrderDto.toOrderDto(productOrder);
     }
 
-    public Page<OrderDto> findOrder(String userId, LocalDate startDt, Pageable pageable){
-        User user = userRepository.findByEmail(userId).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-
-        List<OrderDto> productsDto = new ArrayList<>();
+    public Page<OrderDto> findOrder(SecurityUser securityUser, LocalDate startDt, Pageable pageable){
+        User user = securityUser.getUser();
 
         // 시작기간에러 // 전체조회 => 데이터가 많은 경우, 메모리 문제가 생길 수 있음!
         if(startDt == null) throw new ParameterMissedException("시작기간을 선택해주세요.");
 
         LocalDateTime start = startDt.atStartOfDay();
-
-        System.out.println(startDt+"======start====== : " + start);
 
         Page<ProductOrder> products = orderRepository.findByCreatedGreaterThanAndUser(start, user, pageable);
 
@@ -70,10 +66,9 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto updateOrder(Long id, OrderCommand.UpdateOrder updateCommand){
-        User user = userRepository.findByEmail(updateCommand.getUserId()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-
-        ProductOrder order = orderRepository.findById(id).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
+    public OrderDto updateOrder(SecurityUser securityUser, OrderCommand.UpdateOrder updateCommand){
+        User user = securityUser.getUser();
+        ProductOrder order = orderRepository.findById(user.getId()).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
 
         if(order.getUser() == user){
             orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
