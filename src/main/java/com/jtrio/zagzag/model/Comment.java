@@ -1,10 +1,11 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.enums.CommenterType;
-import com.jtrio.zagzag.enums.Status;
+import com.jtrio.zagzag.enums.MessageStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,11 +18,13 @@ public class Comment {
     private Long id;
     private String content;
     private CommenterType commenterType;
-    private Status status;
+    private MessageStatus messageStatus;
     private Boolean secret;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime created;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updated;
 
