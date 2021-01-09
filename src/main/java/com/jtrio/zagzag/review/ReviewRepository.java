@@ -4,6 +4,8 @@ import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.Review;
 import com.jtrio.zagzag.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +18,8 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     boolean existsByOrder(ProductOrder order);
-    List<Review> findByProduct(Product product);
+    Optional<Review> findById(Long id);
+    Page<Review> findByProduct(Product product, Pageable pageable);
     List<Review> findByUserAndProduct(User user, Product product);
 
     @Query(value = "SELECT avg(productScore) FROM Review where product=:product")

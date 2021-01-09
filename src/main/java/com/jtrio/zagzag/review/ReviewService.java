@@ -2,9 +2,11 @@ package com.jtrio.zagzag.review;
 
 import com.jtrio.zagzag.category.CategoryRepository;
 import com.jtrio.zagzag.exception.DuplicateReviewException;
+import com.jtrio.zagzag.exception.FailedChangeException;
 import com.jtrio.zagzag.exception.NonPurchaseException;
 import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.*;
+import com.jtrio.zagzag.order.OrderDto;
 import com.jtrio.zagzag.order.OrderRepository;
 import com.jtrio.zagzag.product.ProductCommand;
 import com.jtrio.zagzag.product.ProductDto;
@@ -13,6 +15,8 @@ import com.jtrio.zagzag.product.ProductService;
 import com.jtrio.zagzag.security.SecurityUser;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,18 @@ public class ReviewService {
     private final OrderRepository orderRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+
+    public Page<ReviewDto> getProductReviews(Long id, SecurityUser securityUser, Pageable pageable){
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 상품 찾을 수 없습니다."));
+        // 해당 상품의 전체 리뷰 찾기
+        Page<Review> productReviews = reviewRepository.findByProduct(product, pageable);
+
+        if(securityUser == null){ // 비회원
+            return productReviews.map(review -> ReviewDto.toReviewDto(review));
+        }else{ //회원인증
+            return productReviews.map(review -> ReviewDto.toReviewDto(review, securityUser.getUser()));
+        }
+    }
 
     @Transactional
     public ReviewDto createReview(SecurityUser securityUser, ReviewCommand.createReview reviewCommand){
@@ -54,6 +70,25 @@ public class ReviewService {
         productService.updateScore(review.getProduct());
 
         return ReviewDto.toReviewDto(review);
+    }
 
+    @Transactional
+    public int updateLiker(Long id, SecurityUser securityUser){
+        User user = securityUser.getUser();
+        Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
+
+        List<User> likers = review.getLikers();
+
+        for(User likedUser : likers){
+            if(likedUser.equals(user)){
+                throw new FailedChangeException("이미 추천한 구매후기입니다.");
+            }
+        }
+
+        likers.add(user);
+        review.setLikers(likers);
+        reviewRepository.save(review);
+
+        return review.getLikers().size();
     }
 }
