@@ -38,24 +38,4 @@ public class ProductOrder {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-//    public OrderDto toOrderDto(){
-//        ProductDto.OrderProductDto productDto = new ProductDto.OrderProductDto();
-//        productDto.setId(product.getId());
-//        productDto.setName(product.getName());
-//        productDto.setPrice(product.getPrice());
-//        productDto.setImage(product.getImage());
-//        productDto.setCategory(product.getCategory());
-//
-//        OrderDto orderDto = new OrderDto();
-//        orderDto.setId(id);
-//        orderDto.setProduct(productDto);
-//        orderDto.setTotalPrice(price);
-//        orderDto.setStatus(status);
-//        orderDto.setCreated(created);
-//        orderDto.setUpdated(updated);
-//
-//        return orderDto;
-//    }
-
 }

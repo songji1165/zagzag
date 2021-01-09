@@ -58,7 +58,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public OrderDto updateOrder(
+    public OrderDto updateOrder( // 주문취소
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody OrderCommand.UpdateOrder updateOrder){
         return orderService.updateOrder(securityUser, updateOrder);

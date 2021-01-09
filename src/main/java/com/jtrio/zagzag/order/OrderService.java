@@ -1,5 +1,7 @@
 package com.jtrio.zagzag.order;
 
+import com.jtrio.zagzag.enums.OrderStatus;
+import com.jtrio.zagzag.exception.FailedChangeException;
 import com.jtrio.zagzag.exception.ParameterMissedException;
 import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.Product;
@@ -70,10 +72,28 @@ public class OrderService {
         User user = securityUser.getUser();
         ProductOrder order = orderRepository.findById(user.getId()).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
 
-        if(order.getUser() == user){
-            orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
+        /**
+        * 1. role 확인 :
+         *      User - 취소만 변경 가능 (ORDER -> RETURN)
+         *                  + Delivery , Return 인 경우 변경 불가
+         *
+         *      Admin - 취소 배송 변경 가능 (ORDER -> DELIVERY -> RETURN)
+         *                  + Delivery : order인 경우만 변경 가능
+         *                  + Return :
+         *
+         *              공통 : RETURN인 경우 취소 못함.
+        * */
 
-            return OrderDto.toOrderDto(order);
+        if(user.equals(order.getUser())){ //주문자와 security user와 동일한지 확인
+            OrderStatus orderStatus = order.getStatus();
+            OrderStatus updateStatus = updateCommand.getStatus();
+
+            if(orderStatus == OrderStatus.ORDER && updateStatus == OrderStatus.RETURN){
+                orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
+                return OrderDto.toOrderDto(order);
+            }else{
+                throw new FailedChangeException("주문 상태를 변경할 수 없습니다.");
+            }
 
         }else{
             throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
