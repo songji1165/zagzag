@@ -21,6 +21,7 @@ public class ReviewDto {
     private LocalDateTime created;
     private LocalDateTime updated;
     private String email;
+    private Boolean myReveiw = false;
 
     public static ReviewDto toReviewDto(Review review){
         ReviewDto reviewDto = new ReviewDto();
@@ -47,6 +48,7 @@ public class ReviewDto {
         reviewDto.setUpdated(review.getUpdated());
         reviewDto.setEmail(review.getUser().getEmail());
 
+
         List<User> reviewLikers = review.getLikers();
         reviewDto.setLikers(reviewLikers.size());
         for(User liker : reviewLikers){
@@ -54,6 +56,10 @@ public class ReviewDto {
                 reviewDto.setLiked(true);
                 break;
             }
+        }
+
+        if(review.getUser().getEmail() == user.getEmail()){
+            reviewDto.setMyReveiw(true);
         }
 
         return reviewDto;
