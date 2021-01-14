@@ -11,21 +11,17 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-@Data
 public class QuestionCommand {
-
     @Data
     public static class CreateQuestionCommand{
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private MessageStatus status = MessageStatus.NORMAL;
         private Boolean secret = false;
-        @NotBlank(message = "로그인을 해주세요.")
-        private Long userId;
         @NotBlank(message = "상품을 선택해주세요")
         private Long productId;
 
-        public Question toQuestion(User user, Product product, List<ProductOrder> order){
+        public Question toQuestion(User user, Product product, boolean buyer){
             Question question = new Question();
 
             question.setContent(content);
@@ -34,7 +30,7 @@ public class QuestionCommand {
             question.setUser(user);
             question.setProduct(product);
 
-            if(order.size() > 0) {
+            if(buyer) {
                 question.setType(CommenterType.BUYER);
             }else{
                 question.setType(CommenterType.NON_BUYER);

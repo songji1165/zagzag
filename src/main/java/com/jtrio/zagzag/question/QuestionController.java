@@ -38,11 +38,7 @@ public class QuestionController {
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody QuestionCommand.updateQuestionCommand updateQuestionCommand
             ){
-
         return questionService.updateQuestion(id, securityUser, updateQuestionCommand);
     }
-
-
-
 
 }

@@ -21,7 +21,5 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<ProductOrder, Long> {
 ///    (Category category, Pageable pageable);
     Page<ProductOrder> findByCreatedGreaterThanAndUser(LocalDateTime start, User user, Pageable pageable);
-    List<ProductOrder> findAll();
-    List<ProductOrder> findByUser(User user);
-    List<ProductOrder> findByUserAndProduct(User user, Product product);
+    boolean existsByUserAndProduct(User user, Product product);
 }

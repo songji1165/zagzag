@@ -32,10 +32,10 @@ public class CommentService {
     public CommentDto createComment(SecurityUser securityUser, CommentCommand commentCommand){
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Question question = questionRepository.findById(commentCommand.getQuestionId()).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
-        List<ProductOrder> order = orderRepository.findByUserAndProduct(user, question.getProduct());
+        boolean buyer = orderRepository.existsByUserAndProduct(user, question.getProduct());
 
         if(question.getSecret() == false){
-            Comment comment = commentCommand.toComment(user, question, order);
+            Comment comment = commentCommand.toComment(user, question, buyer);
             commentRepository.save(comment);
 
             List<Comment> questionComment = question.getComments();

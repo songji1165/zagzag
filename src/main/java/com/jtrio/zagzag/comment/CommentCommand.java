@@ -18,13 +18,10 @@ public class CommentCommand {
         private String content;
         private MessageStatus status = MessageStatus.NORMAL;
         private Boolean secret = false;
-        @NotBlank(message = "로그인을 해주세요.")
-        private Long userId;
         @NotBlank(message = "질문을 선택해주세요.")
         private Long questionId;
 
-
-        public Comment toComment(User user, Question question, List<ProductOrder> order){
+        public Comment toComment(User user, Question question, boolean buyer){
             Comment comment = new Comment();
 
             comment.setContent(content);
@@ -33,7 +30,7 @@ public class CommentCommand {
             comment.setUser(user);
             comment.setQuestion(question);
 
-            if(order.size() > 0) {
+            if(buyer) { //order가 있으면 바이어
                 comment.setType(CommenterType.BUYER);
             }else{
                 comment.setType(CommenterType.NON_BUYER);
@@ -41,6 +38,5 @@ public class CommentCommand {
 
             return comment;
         }
-
 
 }

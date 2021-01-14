@@ -16,10 +16,8 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class OrderCommand {
-
     @Data
     public static class OrderProduct{
-
         @Email
         private String userEmail;
         @NotBlank(message = "상품을 선택해주세요.")
@@ -43,18 +41,15 @@ public class OrderCommand {
 
     @Data
     public static class UpdateOrder{
-
-        @NotBlank
-        private String userId;
         @NotBlank
         private OrderStatus status;
 
         public ProductOrder toProductOrder(ProductOrder productOrder, OrderStatus status){
-
             productOrder.setStatus(status);
 
             return productOrder;
         }
 
     }
+
 }

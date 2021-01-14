@@ -13,9 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
-//    List<Product> findAll();
-
     Page<Product> findAllByCategory(Category category, Pageable pageable);
-
     Optional<Product> findById(Long id);
 }

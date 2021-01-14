@@ -24,21 +24,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    /**
-    * 1. 주문하기
-     *      - 사용자 조회
-     *      - 상품 조회
-     *      - 주문추가
-     *      - return 주문내용
-     *
-     * 2. 주문조회
-     *      - 사용자 조회
-     *      - 전체 주문 상품 조회
-     *      - 기간별 상품 조회
-     *
-     * 3. 주문삭제
-     *      - 사용자 조회
-    * */
 
     @PostMapping
     public OrderDto createOrder(

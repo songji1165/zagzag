@@ -1,11 +1,9 @@
 package com.jtrio.zagzag.user;
 
-import com.jtrio.zagzag.enums.ErrorMsg;
 import com.jtrio.zagzag.enums.Gender;
 import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.security.UserRole;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 public class UserCommand {
     @Data
     public static class CreateUser {
-
         @Email(message = "이메일 형식을 확인해주세요.")
         private String email;
         @NotBlank(message = "비밀번호를 입력해주세요.")
@@ -23,7 +20,6 @@ public class UserCommand {
         private Gender gender;
         private String addr;
         private UserRole role;
-
 
         public User toUser(){
             User user = new User();
