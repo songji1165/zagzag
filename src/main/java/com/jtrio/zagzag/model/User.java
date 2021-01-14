@@ -35,13 +35,4 @@ public class User {
     @LastModifiedDate
     private LocalDateTime updated;
 
-//    public UserDto toUserDto(){
-//        UserDto userDto = new UserDto();
-//        userDto.setEmail(email);
-//        userDto.setName(name);
-//        userDto.setGender(gender);
-//        userDto.setAddr(addr);
-//
-//        return userDto;
-//    }
 }

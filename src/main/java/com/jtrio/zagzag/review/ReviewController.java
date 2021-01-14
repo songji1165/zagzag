@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.review;
 
+import com.jtrio.zagzag.liker.LikerService;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
+    private final LikerService likerService;
 
     @GetMapping("/product/{id}")
     public Page<ReviewDto> getProductReviews(
@@ -37,6 +39,6 @@ public class ReviewController {
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser
             ){
-        return reviewService.updateLiker(id,securityUser);
+        return likerService.updateLiker(id,securityUser);
     }
 }

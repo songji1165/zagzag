@@ -1,7 +1,5 @@
 package com.jtrio.zagzag.model;
 
-import com.jtrio.zagzag.enums.Evaluation;
-import com.jtrio.zagzag.review.ReviewDto;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,8 +22,9 @@ public class Review {
     private byte productScore;
     private byte deliveryScore;
 
-    @ManyToMany
-    private List<User> likers = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name="liker_id")
+    private List<Liker> likers = new ArrayList<>(); //어떤 user 가 좋아요했는지, 테이블을 따로 만든다.
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate

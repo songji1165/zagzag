@@ -15,7 +15,5 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 //    boolean existsByOrder(ProductOrder order);
     Optional<Question> findById(Long id);
-    Optional<Question> findByProductAndUser(Product product, User user);
     Page<Question> findByProduct(Product product, Pageable pageable);
-    List<Question> findByUser(User user, Pageable pageable);
 }

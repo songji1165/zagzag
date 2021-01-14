@@ -45,7 +45,6 @@ public class CommentDto {
         commentDto.setCreated(comment.getCreated());
         commentDto.setEmail(comment.getUser().getEmail());
 
-
         if(comment.getUser().getEmail().equals(user.getEmail())){
             commentDto.setMyComment(true);
         }

@@ -16,12 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +26,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
-    /***
+    /**
      *  Spring Security
      * 1. 클라이언트 User정보 받기
      * 2. User의 정보를  인증된 User정보와 맞는지 서버에서 정보 찾기
@@ -38,30 +34,27 @@ public class OrderService {
      *
      * ========================
      *  대체 : user정보가 등록된 user인지 확인하기
-     *
      * */
+
     @Transactional
     public OrderDto createOrder(SecurityUser securityUser, OrderCommand.OrderProduct params){
-        User user = securityUser.getUser();
+        User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(params.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
 
         ProductOrder productOrder = params.toProductOrder(user, product);
-
         orderRepository.save(productOrder);
 
         return OrderDto.toOrderDto(productOrder);
     }
 
     public Page<OrderDto> findOrder(SecurityUser securityUser, LocalDate startDt, Pageable pageable){
-        User user = securityUser.getUser();
+        User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         // 시작기간에러 // 전체조회 => 데이터가 많은 경우, 메모리 문제가 생길 수 있음!
         if(startDt == null) throw new ParameterMissedException("시작기간을 선택해주세요.");
 
         LocalDateTime start = startDt.atStartOfDay();
-
         Page<ProductOrder> products = orderRepository.findByCreatedGreaterThanAndUser(start, user, pageable);
-
         Page<OrderDto> orderDto = products.map(product -> OrderDto.toOrderDto(product));
 
         return orderDto;
@@ -69,20 +62,8 @@ public class OrderService {
 
     @Transactional
     public OrderDto updateOrder(SecurityUser securityUser, OrderCommand.UpdateOrder updateCommand){
-        User user = securityUser.getUser();
+        User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         ProductOrder order = orderRepository.findById(user.getId()).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
-
-        /**
-        * 1. role 확인 :
-         *      User - 취소만 변경 가능 (ORDER -> RETURN)
-         *                  + Delivery , Return 인 경우 변경 불가
-         *
-         *      Admin - 취소 배송 변경 가능 (ORDER -> DELIVERY -> RETURN)
-         *                  + Delivery : order인 경우만 변경 가능
-         *                  + Return :
-         *
-         *              공통 : RETURN인 경우 취소 못함.
-        * */
 
         if(user.equals(order.getUser())){ //주문자와 security user와 동일한지 확인
             OrderStatus orderStatus = order.getStatus();
@@ -98,7 +79,6 @@ public class OrderService {
         }else{
             throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
         }
-
-
     }
+
 }

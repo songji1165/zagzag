@@ -1,12 +1,10 @@
 package com.jtrio.zagzag.review;
 
-import com.jtrio.zagzag.model.Category;
-import com.jtrio.zagzag.model.Product;
-import com.jtrio.zagzag.model.Review;
-import com.jtrio.zagzag.model.User;
+import com.jtrio.zagzag.model.*;
 import com.jtrio.zagzag.user.UserDto;
 import lombok.Data;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,7 +35,7 @@ public class ReviewDto {
         return reviewDto;
     }
 
-    public static ReviewDto toReviewDto(Review review, User user){
+    public static ReviewDto toReviewDto(Review review, String userEmail, boolean booleanReview){
         ReviewDto reviewDto = new ReviewDto();
 
         reviewDto.setId(review.getId());
@@ -47,18 +45,10 @@ public class ReviewDto {
         reviewDto.setCreated(review.getCreated());
         reviewDto.setUpdated(review.getUpdated());
         reviewDto.setEmail(review.getUser().getEmail());
+        reviewDto.setLikers(review.getLikers().size());
+        reviewDto.setLiked(booleanReview);
 
-
-        List<User> reviewLikers = review.getLikers();
-        reviewDto.setLikers(reviewLikers.size());
-        for(User liker : reviewLikers){
-            if(liker.equals(user)){
-                reviewDto.setLiked(true);
-                break;
-            }
-        }
-
-        if(review.getUser().getEmail() == user.getEmail()){
+        if(userEmail.equals(review.getUser().getEmail())){
             reviewDto.setMyReveiw(true);
         }
 

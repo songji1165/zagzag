@@ -2,9 +2,9 @@ package com.jtrio.zagzag.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class DuplicateReviewException extends ApiException {
+public class DuplicateDataException extends ApiException {
 
-    public DuplicateReviewException(String message){
+    public DuplicateDataException(String message){
         super(message);
     }
 

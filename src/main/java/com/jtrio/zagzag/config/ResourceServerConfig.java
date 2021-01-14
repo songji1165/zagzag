@@ -15,11 +15,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//            .antMatchers(HttpMethod.POST, "/users")
-//            .permitAll()
-//            .anyRequest()
-//            .authenticated();
-                .anyRequest().permitAll();
+            .antMatchers(HttpMethod.POST, "/users")
+            .permitAll()
+            .anyRequest()
+            .authenticated();
+//                .anyRequest().permitAll();
     }
 
     @Override
