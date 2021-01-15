@@ -8,8 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -22,9 +20,9 @@ public class Review {
     private byte productScore;
     private byte deliveryScore;
 
-    @OneToMany
-    @JoinColumn(name="liker_id")
-    private List<Liker> likers = new ArrayList<>(); //어떤 user 가 좋아요했는지, 테이블을 따로 만든다.
+//    @OneToMany
+//    @JoinColumn(name="liker_id")
+//    private List<Liker> likers = new ArrayList<>(); //어떤 user 가 좋아요했는지, 테이블을 따로 만든다.
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate

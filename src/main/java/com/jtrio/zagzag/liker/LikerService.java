@@ -20,17 +20,16 @@ public class LikerService {
     private final LikerRepository likerRepository;
 
     @Transactional
-    public int updateLiker(Long id, SecurityUser securityUser){
+    public Long updateLiker(Long id, SecurityUser securityUser){
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Long userId = user.getId();
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
 
-        Long likers = likerRepository.countByUserIdAndReview(userId, review);
-        if(likers > 0) throw new DuplicateDataException("좋아요는 리뷰 한 개당 한 번만 가능합니다.");
+        boolean likers = likerRepository.existsByUserIdAndReview(userId, review);
+        if(likers) throw new DuplicateDataException("좋아요는 리뷰 한 개당 한 번만 가능합니다.");
 
         Liker liker = LikerCommand.toLiker(userId, review);
         likerRepository.save(liker);
-
-        return review.getLikers().size();
+        return likerRepository.countByReview(review);
     }
 }

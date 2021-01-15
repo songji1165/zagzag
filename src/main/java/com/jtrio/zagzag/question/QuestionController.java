@@ -23,13 +23,13 @@ public class QuestionController {
         return questionService.createQuestion(securityUser, questionCommand);
     }
 
-    @GetMapping("/product/{id}")//productId
+    @GetMapping("/product/{productId}")
     public Page<QuestionDto> getProductQuestions(
-            @PathVariable Long id,
+            @PathVariable Long productId,
             @AuthenticationPrincipal SecurityUser securityUser,
             @PageableDefault() Pageable pageable
     ){
-        return questionService.getProductQuestions(id, securityUser, pageable);
+        return questionService.getProductQuestions(productId, securityUser, pageable);
     }
 
     @PutMapping("/{id}")

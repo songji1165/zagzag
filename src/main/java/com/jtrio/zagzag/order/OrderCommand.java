@@ -18,11 +18,10 @@ import java.util.List;
 public class OrderCommand {
     @Data
     public static class OrderProduct{
-        @Email
-        private String userEmail;
         @NotBlank(message = "상품을 선택해주세요.")
         private Long productId;
         @Min(0)
+        @NotBlank(message = "주문 가격을 입력해주세요.")
         private Integer price;
         private OrderStatus status = OrderStatus.ORDER;
 

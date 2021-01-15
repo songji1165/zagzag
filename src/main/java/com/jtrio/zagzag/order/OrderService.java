@@ -61,9 +61,9 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto updateOrder(SecurityUser securityUser, OrderCommand.UpdateOrder updateCommand){
+    public OrderDto updateOrder(Long id, SecurityUser securityUser, OrderCommand.UpdateOrder updateCommand){
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-        ProductOrder order = orderRepository.findById(user.getId()).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
+        ProductOrder order = orderRepository.findById(id).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
 
         if(user.equals(order.getUser())){ //주문자와 security user와 동일한지 확인
             OrderStatus orderStatus = order.getStatus();

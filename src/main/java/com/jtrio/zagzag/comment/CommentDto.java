@@ -18,6 +18,7 @@ public class CommentDto {
     private MessageStatus status;
     private Boolean secret;
     private LocalDateTime created;
+    private LocalDateTime updated;
     private String email;
     private Boolean myComment = false;
 
@@ -30,6 +31,7 @@ public class CommentDto {
         commentDto.setStatus(comment.getStatus());
         commentDto.setSecret(comment.getSecret());
         commentDto.setCreated(comment.getCreated());
+        commentDto.setUpdated(comment.getUpdated());
         commentDto.setEmail(comment.getUser().getEmail());
         return commentDto;
     }

@@ -35,8 +35,8 @@ public class Question {
 
 //    @OneToMany
 //    @JoinColumn(name="comment_id")
-    @ManyToMany
-    private List<Comment> comments = new ArrayList<>();
+////    @ManyToMany
+//    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="user_id") //**name은 필드이름으로! 그외에 JPA는 카멜

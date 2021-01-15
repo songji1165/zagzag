@@ -50,7 +50,7 @@ public class QuestionCommand {
                 question.setContent(content);
             }
 
-            if(!secret.equals(question.getSecret())){
+            if(secret != null && !secret.equals(question.getSecret())){
                 question.setSecret(secret);
             }
 

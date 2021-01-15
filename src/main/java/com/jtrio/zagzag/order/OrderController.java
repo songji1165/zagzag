@@ -44,9 +44,10 @@ public class OrderController {
 
     @PutMapping("/{id}")
     public OrderDto updateOrder( // 주문취소
+             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody OrderCommand.UpdateOrder updateOrder){
-        return orderService.updateOrder(securityUser, updateOrder);
+        return orderService.updateOrder(id, securityUser, updateOrder);
     }
 
 }

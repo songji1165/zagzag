@@ -18,6 +18,7 @@ public class ProductCommand {
         @NotBlank(message = "상품명을 입력해주세요.")
         private String name;
         @Min(0)
+        @NotBlank(message = "가격을 입력해주세요.")
         private Integer price;
         @NotBlank(message = "상품이미지를 입력해주세요.")
         private String image;

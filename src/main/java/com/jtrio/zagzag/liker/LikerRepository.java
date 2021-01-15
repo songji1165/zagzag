@@ -5,6 +5,6 @@ import com.jtrio.zagzag.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikerRepository extends JpaRepository<Liker, Long> {
-    Long countByUserIdAndReview(Long id, Review review);
+    Long countByReview(Review review);
     boolean existsByUserIdAndReview(Long id, Review review);
 }

@@ -17,13 +17,13 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final LikerService likerService;
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/product/{productId}")
     public Page<ReviewDto> getProductReviews(
-            @PathVariable Long id,
+            @PathVariable Long productId,
             @AuthenticationPrincipal SecurityUser securityUser,
             @PageableDefault Pageable pageable
     ){
-        return reviewService.getProductReviews(id, securityUser, pageable);
+        return reviewService.getProductReviews(productId, securityUser, pageable);
     }
 
     @PostMapping
@@ -34,8 +34,8 @@ public class ReviewController {
         return reviewService.createReview(securityUser, review);
     }
 
-    @PutMapping("likers/{id}") //리뷰 id
-    public int updateLiker(
+    @PutMapping("likers/{id}")
+    public Long updateLiker(
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser
             ){

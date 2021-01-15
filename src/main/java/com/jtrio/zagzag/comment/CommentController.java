@@ -22,11 +22,11 @@ public class CommentController {
         return commentService.createComment(securityUser, commentCommand);
     }
 
-    @GetMapping("/question/{id}")
+    @GetMapping("/question/{questionId}")
     public List<CommentDto> getQuestionComments(
-            @PathVariable Long id,
+            @PathVariable Long questionId,
             @AuthenticationPrincipal SecurityUser securityUser
             ){
-        return commentService.getQuestionComments(id, securityUser);
+        return commentService.getQuestionComments(questionId, securityUser);
     }
 }

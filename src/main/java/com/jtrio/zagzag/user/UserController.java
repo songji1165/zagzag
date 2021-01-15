@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    /**
-     * catch(정확하게  예외 클래스 지정해주기 )
-     **/
-
    @PostMapping
    public UserDto joinUser(@RequestBody UserCommand.CreateUser user){
        return userService.joinUser(user);

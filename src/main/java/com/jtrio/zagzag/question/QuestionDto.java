@@ -20,11 +20,12 @@ public class QuestionDto {
     private MessageStatus status;
     private Boolean secret;
     private LocalDateTime created;
-    private Integer comments; //더보기 누른 경우, 해당 질문의 답변 GET
+    private LocalDateTime updated;
+    private Long comments; //더보기 누른 경우, 해당 질문의 답변 GET
     private String email;
     private Boolean myQuestion = false;
 
-    public static QuestionDto toQuestionDto(Question question){
+    public static QuestionDto toQuestionDto(Question question, Long comments){
         QuestionDto questionDto = new QuestionDto();
 
         questionDto.setId(question.getId());
@@ -34,13 +35,14 @@ public class QuestionDto {
         questionDto.setStatus(question.getStatus());
         questionDto.setSecret(question.getSecret());
         questionDto.setCreated(question.getCreated());
-        questionDto.setComments(question.getComments().size());
+        questionDto.setUpdated(question.getUpdated());
+        questionDto.setComments(comments);
         questionDto.setEmail(question.getUser().getEmail());
 
         return questionDto;
     }
 
-    public static QuestionDto toQuestionDto(Question question, User user){
+    public static QuestionDto toQuestionDto(Question question, Long comments, User user){
         QuestionDto questionDto = new QuestionDto();
 
         questionDto.setId(question.getId());
@@ -50,7 +52,7 @@ public class QuestionDto {
         questionDto.setStatus(question.getStatus());
         questionDto.setSecret(question.getSecret());
         questionDto.setCreated(question.getCreated());
-        questionDto.setComments(question.getComments().size());
+        questionDto.setComments(comments);
 
         User questionUser = question.getUser();
         questionDto.setEmail(questionUser.getEmail());

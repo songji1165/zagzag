@@ -15,5 +15,6 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findById(Long id);
 //    Page<Review> findByProduct(Product product, Pageable pageable);
-//    List<Review> findByUserAndProduct(User user, Product product);
+    List<Comment> findByQuestion(Question question);
+    Long countByQuestion(Question question);
 }
