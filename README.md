@@ -1,8 +1,11 @@
 # 클론 티몬 rest api(user 전용)
 
 ## # Rest Api 명세서
+
 > - ** : 필수 파라미터
 > - Pageable : 요청에 따라, Params에  ( page / size /sort ) 추가
+
+<hr/>
 
 ### 1. User
 1. POST /users
@@ -73,7 +76,7 @@
     ```
    <br/>  
 
-### 1. Product
+### 2. Product
 1. POST /products
    - 상품 등록
    - 요청 파라미터
