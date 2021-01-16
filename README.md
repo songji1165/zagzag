@@ -403,3 +403,43 @@
     ```
    <br/>  
 
+### 7. Category
+1. GET /categories
+   - 카테고리 전체 조회
+   - 요청 파라미터
+    ```text
+    ```
+   - 응답 데이터
+   ```text
+     1. id : categoryId 
+     2. name : 카테고리명
+    ```
+   <br/>  
+
+<hr/>
+
+## # oauth Api (Token 발급)
+### 1. TOKEN 발급
+1. POST /oauth/token
+   - Token 발급 
+   - 요청 파라미터
+    ```text
+      Params
+      1. **grant_type : **password
+      2. password : 사용자의 비밀번호
+      3. username : 사용자의 ID ( 이메일 )
+    ```
+   - 응답 데이터
+   ```text
+     1. access_token 
+     2. token_type : bearer
+     3. refresh_token 
+     4. expires_in
+     5. scope
+     6. jti 
+    ```
+   <br/> 
+   
+
+
+
