@@ -63,6 +63,23 @@
     ```
 <br/>  
 
+4. GET /user
+   - user 정보 조회
+     - 로그인 성공시 user 정보 조
+   - 요청 파라미터
+    ```text
+     Header
+     1. **Authorization : Bearer {token}
+    ```
+      - 응답 데이터
+    ```text
+     1. email : 사용자 이메일(아이디) 
+     3. name : 사용자 이름 
+     4. gender : ( MALE / FEMALE )
+     5. addr :  주소  
+    ```
+<br/>  
+
 4. GET /users/duplicate-email
     - 이메일 중복검사
     - 요청 파라미터

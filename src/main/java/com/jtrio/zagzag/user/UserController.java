@@ -21,15 +21,20 @@ public class UserController {
        return securityUser.getUsername();
    }
 
-    @GetMapping("/duplicate-email")
-    public boolean getUserEmail(String email){
-       return userService.findUserEmail(email);
-    }
+   @GetMapping
+   public UserDto getUser(@AuthenticationPrincipal SecurityUser securityUser){
+       return userService.getUser(securityUser);
+   }
 
-    @PutMapping("/{id}")
-    public UserDto updateUser(@AuthenticationPrincipal SecurityUser securityUser, @RequestBody UserCommand.UpdateUser user) {
-        return userService.updateUser(securityUser, user);
-    }
+   @GetMapping("/duplicate-email")
+   public boolean getUserEmail(String email){
+       return userService.findUserEmail(email);
+   }
+
+   @PutMapping("/{id}")
+   public UserDto updateUser(@AuthenticationPrincipal SecurityUser securityUser, @RequestBody UserCommand.UpdateUser user) {
+       return userService.updateUser(securityUser, user);
+   }
 
 }
 
