@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.comment;
 
-import com.jtrio.zagzag.question.QuestionCommand;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

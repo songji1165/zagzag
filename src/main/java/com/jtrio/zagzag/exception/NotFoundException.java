@@ -11,7 +11,7 @@ public class NotFoundException extends ApiException {
     public NotFoundException(String message){
         super(message);
     }
-        public HttpStatus getStatus(){
+    public HttpStatus getStatus(){
             return HttpStatus.NOT_FOUND;
         }
 }

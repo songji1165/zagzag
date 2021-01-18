@@ -34,7 +34,7 @@ public class CommentService {
         Question question = questionRepository.findById(commentCommand.getQuestionId()).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
         boolean buyer = orderRepository.existsByUserAndProduct(user, question.getProduct());
 
-        if(question.getSecret() == false){
+        if(!question.getSecret()){
             Comment comment = commentCommand.toComment(user, question, buyer);
             commentRepository.save(comment);
 

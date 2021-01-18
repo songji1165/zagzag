@@ -15,41 +15,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/users")
+            .antMatchers(HttpMethod.POST, "/users","/products")
             .permitAll()
             .and()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/users/duplicate-email")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/comments/**")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/categories")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/products")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/products")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/questions")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/reviews/**")
+            .antMatchers(HttpMethod.GET, "/users/duplicate-email", "/comments/**", "/categories", "/products", "/questions", "/reviews/**")
             .permitAll()
             .anyRequest()
             .authenticated();
 //                .anyRequest().permitAll();
-
-
     }
 
     @Override

@@ -6,7 +6,7 @@ public class FailedChangeException extends ApiException {
     public FailedChangeException(String message){
         super(message);
     }
-        public HttpStatus getStatus(){
+    public HttpStatus getStatus(){
             return HttpStatus.BAD_REQUEST;
         }
 }

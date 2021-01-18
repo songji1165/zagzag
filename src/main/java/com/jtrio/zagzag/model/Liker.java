@@ -12,7 +12,9 @@ public class Liker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId; //User를 넣어야 하나 .?
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private User user;
     @ManyToOne
     @JoinColumn(name="review_id")
     private Review review;

@@ -40,12 +40,11 @@ public class ReviewService {
         }else{ //회원인증
             User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
             String email = user.getEmail();
-            Long userId = user.getId();
 
             // 나의 리뷰인지, 내가 좋아요 했는지 ....
             return productReviews.map(review -> {
                         Long likers = likerRepository.countByReview(review);
-                        boolean liked = likerRepository.existsByUserIdAndReview(user.getId(), review);
+                        boolean liked = likerRepository.existsByUserAndReview(user, review);
                         return ReviewDto.toReviewDto(
                             review,
                             likers,
