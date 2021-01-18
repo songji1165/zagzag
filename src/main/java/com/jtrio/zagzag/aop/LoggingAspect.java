@@ -19,12 +19,20 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LoggingAspect {
 
+    /**
+     * RequestContextHolder : 어디서든 HttpSevletRequest 사용하기(접급하기)
+     *  - HttpSevlet : HTTP URI, HTTP method, HTTP body, HTTP header(ex. cookie 접근), Http session(ex. 로그인 여부)
+     *  - HttpSevlet 접근 방법 : HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+     **/
+
     @Before("execution(* com.jtrio.zagzag..*Controller.*(..))")
     public void logging(JoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 //        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        log.info("userId: {}, requesst: {}, params: {}", securityUser.getUserId(), request.getRequestURL(), joinPoint.getArgs());
     }
+
+
 
     @Around("execution(* com.jtrio.zagzag..*Controller.*(..))")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -34,7 +42,8 @@ public class LoggingAspect {
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
-            log.error("error");
+            log.error("error msg: ", e);
+            throw e;
         }
         long end = System.currentTimeMillis();
         long time = (end - start);
