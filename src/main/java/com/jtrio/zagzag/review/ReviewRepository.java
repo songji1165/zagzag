@@ -11,16 +11,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     boolean existsByOrder(ProductOrder order);
+
     Optional<Review> findById(Long id);
+
     Page<Review> findByProduct(Product product, Pageable pageable);
-    List<Review> findByUserAndProduct(User user, Product product);
 
     @Query(value = "SELECT avg(productScore) FROM Review where product=:product")
     public Byte avgByProductScore(@Param("product") Product product);

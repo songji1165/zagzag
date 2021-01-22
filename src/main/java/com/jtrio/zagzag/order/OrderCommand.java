@@ -17,7 +17,7 @@ import java.util.List;
 
 public class OrderCommand {
     @Data
-    public static class OrderProduct{
+    public static class OrderProduct {
         @NotBlank(message = "상품을 선택해주세요.")
         private Long productId;
         @Min(0)
@@ -25,7 +25,7 @@ public class OrderCommand {
         private Integer price;
         private OrderStatus status = OrderStatus.ORDER;
 
-        public ProductOrder toProductOrder(User user, Product product){
+        public ProductOrder toProductOrder(User user, Product product) {
             ProductOrder order = new ProductOrder();
 
             order.setPrice(price);
@@ -39,11 +39,11 @@ public class OrderCommand {
     }
 
     @Data
-    public static class UpdateOrder{
+    public static class UpdateOrder {
         @NotBlank
         private OrderStatus status;
 
-        public ProductOrder toProductOrder(ProductOrder productOrder, OrderStatus status){
+        public ProductOrder toProductOrder(ProductOrder productOrder, OrderStatus status) {
             productOrder.setStatus(status);
 
             return productOrder;

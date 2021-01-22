@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +18,7 @@ public class QuestionController {
     public QuestionDto createQuestion(
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody QuestionCommand.CreateQuestionCommand questionCommand
-            ){
+    ) {
         return questionService.createQuestion(securityUser, questionCommand);
     }
 
@@ -28,7 +27,7 @@ public class QuestionController {
             @PathVariable Long productId,
             @AuthenticationPrincipal SecurityUser securityUser,
             @PageableDefault() Pageable pageable
-    ){
+    ) {
         return questionService.getProductQuestions(productId, securityUser, pageable);
     }
 
@@ -37,7 +36,7 @@ public class QuestionController {
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody QuestionCommand.updateQuestionCommand updateQuestionCommand
-            ){
+    ) {
         return questionService.updateQuestion(id, securityUser, updateQuestionCommand);
     }
 

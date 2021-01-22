@@ -17,7 +17,7 @@ public class CommentController {
     public CommentDto createComment(
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody CommentCommand commentCommand
-            ){
+    ) {
         return commentService.createComment(securityUser, commentCommand);
     }
 
@@ -25,7 +25,7 @@ public class CommentController {
     public List<CommentDto> getQuestionComments(
             @PathVariable Long questionId,
             @AuthenticationPrincipal SecurityUser securityUser
-            ){
+    ) {
         return commentService.getQuestionComments(questionId, securityUser);
     }
 }

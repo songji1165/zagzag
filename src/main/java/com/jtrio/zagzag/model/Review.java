@@ -20,10 +20,6 @@ public class Review {
     private byte productScore;
     private byte deliveryScore;
 
-//    @OneToMany
-//    @JoinColumn(name="liker_id")
-//    private List<Liker> likers = new ArrayList<>(); //어떤 user 가 좋아요했는지, 테이블을 따로 만든다.
-
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime created;
@@ -33,13 +29,13 @@ public class Review {
     private LocalDateTime updated;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name="product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @OneToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private ProductOrder order;
 }

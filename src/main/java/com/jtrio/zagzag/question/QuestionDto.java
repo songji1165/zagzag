@@ -3,13 +3,10 @@ package com.jtrio.zagzag.question;
 import com.jtrio.zagzag.enums.CommenterType;
 import com.jtrio.zagzag.enums.MessageStatus;
 import com.jtrio.zagzag.model.Question;
-import com.jtrio.zagzag.model.Review;
 import com.jtrio.zagzag.model.User;
-import com.sun.source.doctree.CommentTree;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class QuestionDto {
@@ -25,7 +22,7 @@ public class QuestionDto {
     private String email;
     private Boolean myQuestion = false;
 
-    public static QuestionDto toQuestionDto(Question question, Long comments){
+    public static QuestionDto toQuestionDto(Question question, Long comments) {
         QuestionDto questionDto = new QuestionDto();
 
         questionDto.setId(question.getId());
@@ -42,7 +39,7 @@ public class QuestionDto {
         return questionDto;
     }
 
-    public static QuestionDto toQuestionDto(Question question, Long comments, User user){
+    public static QuestionDto toQuestionDto(Question question, Long comments, User user) {
         QuestionDto questionDto = new QuestionDto();
 
         questionDto.setId(question.getId());
@@ -56,7 +53,7 @@ public class QuestionDto {
 
         User questionUser = question.getUser();
         questionDto.setEmail(questionUser.getEmail());
-        if(questionUser.equals(user)){
+        if (questionUser.equals(user)) {
             questionDto.setMyQuestion(true);
         }
 

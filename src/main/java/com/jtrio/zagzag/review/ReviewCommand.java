@@ -21,7 +21,7 @@ public class ReviewCommand {
         @NotBlank(message = "주문내역을 선택해주세요.")
         private Long orderId;
 
-        public Review toReview(User user, Product product, ProductOrder order){
+        public Review toReview(User user, Product product, ProductOrder order) {
             Review review = new Review();
 
             review.setContent(content);

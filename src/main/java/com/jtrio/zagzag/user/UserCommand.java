@@ -21,7 +21,7 @@ public class UserCommand {
         private String addr;
         private UserRole role;
 
-        public User toUser(){
+        public User toUser() {
             User user = new User();
             user.setEmail(email);
             user.setPass(pass);
@@ -40,16 +40,16 @@ public class UserCommand {
         private String addr;
         private String pass;
 
-        public User toUser(User user){
-            if(name != null){
+        public User toUser(User user) {
+            if (name != null) {
                 user.setName(name);
             }
 
-            if(addr != null){
+            if (addr != null) {
                 user.setAddr(addr);
             }
 
-            if(pass != null){
+            if (pass != null) {
                 user.setPass(pass);
             }
 

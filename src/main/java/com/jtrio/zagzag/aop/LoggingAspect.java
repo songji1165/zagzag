@@ -13,6 +13,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 
 @Slf4j
 @Aspect
@@ -21,22 +23,26 @@ public class LoggingAspect {
 
     /**
      * RequestContextHolder : 어디서든 HttpSevletRequest 사용하기(접급하기)
-     *  - HttpSevlet : HTTP URI, HTTP method, HTTP body, HTTP header(ex. cookie 접근), Http session(ex. 로그인 여부)
-     *  - HttpSevlet 접근 방법 : HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+     * - HttpSevlet : HTTP URI, HTTP method, HTTP body, HTTP header(ex. cookie 접근), Http session(ex. 로그인 여부)
+     * - HttpSevlet 접근 방법 : HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+     * <p>
+     * https://aljjabaegi.tistory.com/278 (session Check)
      **/
 
-    @Before("execution(* com.jtrio.zagzag..*Controller.*(..))")
-    public void logging(JoinPoint joinPoint) throws Throwable {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+//    @Before("execution(* com.jtrio.zagzag..*Controller.*(..))")
+//    public void logging(JoinPoint joinPoint) throws Throwable {
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+//
+//        HttpSession session = request.getSession();
+
 //        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        log.info("userId: {}, requesst: {}, params: {}", securityUser.getUserId(), request.getRequestURL(), joinPoint.getArgs());
-    }
-
-
-
+//    }
     @Around("execution(* com.jtrio.zagzag..*Controller.*(..))")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+
         long start = System.currentTimeMillis();
         Object result = null;
         try {
@@ -49,11 +55,29 @@ public class LoggingAspect {
         long time = (end - start);
         log.info("userId: {}, requesst: {}, params: {}, elapse time : {}", getUserId(), request.getRequestURL(),
                 proceedingJoinPoint.getArgs(), time);
+        log.info("__________________ Session: ", session, "--------------");
         return result;
     }
 
     private Long getUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return principal instanceof SecurityUser ? ((SecurityUser) principal).getUserId() : -1;
+    }
+
+    @Before("execution(* com.jtrio.zagzag..*Service.*(..))")
+    public void serviceLogging(JoinPoint joinPoint) throws Throwable {
+        Object params[] = joinPoint.getArgs();
+        for (Object param : params) {
+            log.info("++++++++++", param.toString());
+        }
+
+        log.info("----------------------");
+        log.info("1.", Arrays.toString(joinPoint.getArgs()));
+        log.info("2.", joinPoint.getKind());
+        log.info("3.", joinPoint.getSignature());
+        log.info("4.", joinPoint.getTarget().toString());
+        log.info("5.", joinPoint.getThis().toString());
+        log.info("5.", joinPoint.getThis().toString());
+        log.info("----------------------");
     }
 }

@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikerRepository extends JpaRepository<Liker, Long> {
     Long countByReview(Review review);
+
     boolean existsByUserAndReview(User user, Review review);
 }

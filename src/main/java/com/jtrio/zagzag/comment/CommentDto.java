@@ -22,7 +22,7 @@ public class CommentDto {
     private String email;
     private Boolean myComment = false;
 
-    public static CommentDto toCommentDto(Comment comment){
+    public static CommentDto toCommentDto(Comment comment) {
         CommentDto commentDto = new CommentDto();
 
         commentDto.setId(comment.getId());
@@ -36,7 +36,7 @@ public class CommentDto {
         return commentDto;
     }
 
-    public static CommentDto toCommentDto(Comment comment, User user){
+    public static CommentDto toCommentDto(Comment comment, User user) {
         CommentDto commentDto = new CommentDto();
 
         commentDto.setId(comment.getId());
@@ -47,7 +47,7 @@ public class CommentDto {
         commentDto.setCreated(comment.getCreated());
         commentDto.setEmail(comment.getUser().getEmail());
 
-        if(comment.getUser().getEmail().equals(user.getEmail())){
+        if (comment.getUser().getEmail().equals(user.getEmail())) {
             commentDto.setMyComment(true);
         }
 

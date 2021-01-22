@@ -5,15 +5,11 @@ import com.jtrio.zagzag.enums.MessageStatus;
 import com.jtrio.zagzag.model.*;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 public class QuestionCommand {
     @Data
-    public static class CreateQuestionCommand{
+    public static class CreateQuestionCommand {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private MessageStatus status = MessageStatus.NORMAL;
@@ -21,7 +17,7 @@ public class QuestionCommand {
         @NotBlank(message = "상품을 선택해주세요")
         private Long productId;
 
-        public Question toQuestion(User user, Product product, boolean buyer){
+        public Question toQuestion(User user, Product product, boolean buyer) {
             Question question = new Question();
 
             question.setContent(content);
@@ -30,9 +26,9 @@ public class QuestionCommand {
             question.setUser(user);
             question.setProduct(product);
 
-            if(buyer) {
+            if (buyer) {
                 question.setType(CommenterType.BUYER);
-            }else{
+            } else {
                 question.setType(CommenterType.NON_BUYER);
             }
 
@@ -41,16 +37,16 @@ public class QuestionCommand {
     }
 
     @Data
-    public static class updateQuestionCommand{
+    public static class updateQuestionCommand {
         private String content;
         private Boolean secret;
 
-        public Question toQuestion(Question question){
-            if(content != null){
+        public Question toQuestion(Question question) {
+            if (content != null) {
                 question.setContent(content);
             }
 
-            if(secret != null && !secret.equals(question.getSecret())){
+            if (secret != null && !secret.equals(question.getSecret())) {
                 question.setSecret(secret);
             }
 

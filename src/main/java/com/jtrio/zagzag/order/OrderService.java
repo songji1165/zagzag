@@ -27,17 +27,17 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     /**
-     *  Spring Security
+     * Spring Security
      * 1. 클라이언트 User정보 받기
      * 2. User의 정보를  인증된 User정보와 맞는지 서버에서 정보 찾기
      * 3. 인증된 정보인 경우에만, 주문 기능 사용
-     *
+     * <p>
      * ========================
-     *  대체 : user정보가 등록된 user인지 확인하기
-     * */
+     * 대체 : user정보가 등록된 user인지 확인하기
+     */
 
     @Transactional
-    public OrderDto createOrder(SecurityUser securityUser, OrderCommand.OrderProduct params){
+    public OrderDto createOrder(SecurityUser securityUser, OrderCommand.OrderProduct params) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(params.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."));
 
@@ -47,11 +47,11 @@ public class OrderService {
         return OrderDto.toOrderDto(productOrder);
     }
 
-    public Page<OrderDto> findOrder(SecurityUser securityUser, LocalDate startDt, Pageable pageable){
+    public Page<OrderDto> findOrder(SecurityUser securityUser, LocalDate startDt, Pageable pageable) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         // 시작기간에러 // 전체조회 => 데이터가 많은 경우, 메모리 문제가 생길 수 있음!
-        if(startDt == null) throw new ParameterMissedException("시작기간을 선택해주세요.");
+        if (startDt == null) throw new ParameterMissedException("시작기간을 선택해주세요.");
 
         LocalDateTime start = startDt.atStartOfDay();
         Page<ProductOrder> products = orderRepository.findByCreatedGreaterThanAndUser(start, user, pageable);
@@ -61,22 +61,22 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto updateOrder(Long id, SecurityUser securityUser, OrderCommand.UpdateOrder updateCommand){
+    public OrderDto updateOrder(Long id, SecurityUser securityUser, OrderCommand.UpdateOrder updateCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-        ProductOrder order = orderRepository.findById(id).orElseThrow(()->new NotFoundException("해당 주문을 찾을 수 없습니다."));
+        ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 주문을 찾을 수 없습니다."));
 
-        if(user.equals(order.getUser())){ //주문자와 security user와 동일한지 확인
+        if (user.equals(order.getUser())) { //주문자와 security user와 동일한지 확인
             OrderStatus orderStatus = order.getStatus();
             OrderStatus updateStatus = updateCommand.getStatus();
 
-            if(orderStatus == OrderStatus.ORDER && updateStatus == OrderStatus.RETURN){
+            if (orderStatus == OrderStatus.ORDER && updateStatus == OrderStatus.RETURN) {
                 orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
                 return OrderDto.toOrderDto(order);
-            }else{
+            } else {
                 throw new FailedChangeException("주문 상태를 변경할 수 없습니다.");
             }
 
-        }else{
+        } else {
             throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
         }
     }

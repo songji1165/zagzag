@@ -14,7 +14,7 @@ public class LikerCommand {
     @NotBlank(message = "리뷰를 선택해주세요.")
     private Review review;
 
-    public static Liker toLiker (User user, Review review){
+    public static Liker toLiker(User user, Review review) {
         Liker liker = new Liker();
         liker.setUser(user);
         liker.setReview(review);

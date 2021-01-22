@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +21,7 @@ public class ReviewController {
             @PathVariable Long productId,
             @AuthenticationPrincipal SecurityUser securityUser,
             @PageableDefault Pageable pageable
-    ){
+    ) {
         return reviewService.getProductReviews(productId, securityUser, pageable);
     }
 
@@ -30,7 +29,7 @@ public class ReviewController {
     public ReviewDto createReview(
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody ReviewCommand.createReview review
-    ){
+    ) {
         return reviewService.createReview(securityUser, review);
     }
 
@@ -38,7 +37,7 @@ public class ReviewController {
     public Long updateLiker(
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser
-            ){
-        return likerService.updateLiker(id,securityUser);
+    ) {
+        return likerService.updateLiker(id, securityUser);
     }
 }

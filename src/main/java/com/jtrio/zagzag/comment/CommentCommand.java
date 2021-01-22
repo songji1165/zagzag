@@ -14,29 +14,29 @@ import java.util.List;
 
 @Data
 public class CommentCommand {
-        @NotBlank(message = "내용을 입력해주세요.")
-        private String content;
-        private MessageStatus status = MessageStatus.NORMAL;
-        private Boolean secret = false;
-        @NotBlank(message = "질문을 선택해주세요.")
-        private Long questionId;
+    @NotBlank(message = "내용을 입력해주세요.")
+    private String content;
+    private MessageStatus status = MessageStatus.NORMAL;
+    private Boolean secret = false;
+    @NotBlank(message = "질문을 선택해주세요.")
+    private Long questionId;
 
-        public Comment toComment(User user, Question question, boolean buyer){
-            Comment comment = new Comment();
+    public Comment toComment(User user, Question question, boolean buyer) {
+        Comment comment = new Comment();
 
-            comment.setContent(content);
-            comment.setStatus(status);
-            comment.setSecret(secret);
-            comment.setUser(user);
-            comment.setQuestion(question);
+        comment.setContent(content);
+        comment.setStatus(status);
+        comment.setSecret(secret);
+        comment.setUser(user);
+        comment.setQuestion(question);
 
-            if(buyer) { //order가 있으면 바이어
-                comment.setType(CommenterType.BUYER);
-            }else{
-                comment.setType(CommenterType.NON_BUYER);
-            }
-
-            return comment;
+        if (buyer) { //order가 있으면 바이어
+            comment.setType(CommenterType.BUYER);
+        } else {
+            comment.setType(CommenterType.NON_BUYER);
         }
+
+        return comment;
+    }
 
 }

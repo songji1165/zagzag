@@ -13,10 +13,10 @@ public class Liker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name="review_id")
+    @JoinColumn(name = "review_id")
     private Review review;
 
 }

@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.security;
 
-import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;

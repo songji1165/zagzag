@@ -12,9 +12,11 @@ import java.util.Optional;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public Category findCategory(Long id){
+    public Category findCategory(Long id) {
         return categoryRepository.findById(id).get();
     }
 
-    public List<Category> getCategory(){ return categoryRepository.findAll(); }
+    public List<Category> getCategory() {
+        return categoryRepository.findAll();
+    }
 }

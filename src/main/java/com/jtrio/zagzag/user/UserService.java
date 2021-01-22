@@ -15,18 +15,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public boolean findUserEmail(String email){
+    public boolean findUserEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
     @Transactional
-    public UserDto joinUser(UserCommand.CreateUser userCommand){
+    public UserDto joinUser(UserCommand.CreateUser userCommand) {
         User user = userCommand.toUser();
 
         //중복 처리 만들기
         boolean duplicatedEmail = userRepository.existsByEmail(user.getEmail());
 
-        if(duplicatedEmail){
+        if (duplicatedEmail) {
             //throws는 다른이에게 위임
             //throw는 내가 예외내고 끝냄
             throw new DuplicateDataException("이미 존재하는 이메일입니다.");
@@ -40,7 +40,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateUser(SecurityUser securityUser, UserCommand.UpdateUser userCommand){
+    public UserDto updateUser(SecurityUser securityUser, UserCommand.UpdateUser userCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         userCommand.setPass(passwordEncoder.encode(user.getPass()));
@@ -48,7 +48,7 @@ public class UserService {
         return UserDto.toUserDto(user);
     }
 
-    public UserDto getUser(SecurityUser securityUser){
+    public UserDto getUser(SecurityUser securityUser) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         return UserDto.toUserDto(user);
     }

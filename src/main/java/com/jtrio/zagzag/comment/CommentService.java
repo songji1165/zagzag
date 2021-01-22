@@ -29,34 +29,34 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public CommentDto createComment(SecurityUser securityUser, CommentCommand commentCommand){
+    public CommentDto createComment(SecurityUser securityUser, CommentCommand commentCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Question question = questionRepository.findById(commentCommand.getQuestionId()).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
         boolean buyer = orderRepository.existsByUserAndProduct(user, question.getProduct());
 
-        if(!question.getSecret()){
+        if (!question.getSecret()) {
             Comment comment = commentCommand.toComment(user, question, buyer);
             commentRepository.save(comment);
 
             return CommentDto.toCommentDto(comment, user);
-        }else{
+        } else {
             throw new FailedChangeException("비밀글에는 댓글을 달 수 없습니다.");
         }
     }
 
-    public List<CommentDto> getQuestionComments(Long id, SecurityUser securityUser){
+    public List<CommentDto> getQuestionComments(Long id, SecurityUser securityUser) {
         Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
         List<Comment> questionComments = commentRepository.findByQuestion(question);
         List<CommentDto> commentsDto = new ArrayList<>();
 
-        if(securityUser == null){ // 비회원
-            for(Comment comment : questionComments){
+        if (securityUser == null) { // 비회원
+            for (Comment comment : questionComments) {
                 CommentDto commentDto = CommentDto.toCommentDto(comment);
                 commentsDto.add(commentDto);
             }
-        }else{
+        } else {
             User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-            for(Comment comment : questionComments){
+            for (Comment comment : questionComments) {
                 CommentDto commentDto = CommentDto.toCommentDto(comment, user);
                 commentsDto.add(commentDto);
             }

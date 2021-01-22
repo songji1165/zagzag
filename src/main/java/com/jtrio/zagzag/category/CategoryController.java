@@ -17,7 +17,7 @@ public class CategoryController {
 
     @GetMapping
     @Cacheable(cacheNames = "categories")
-    public List<Category> getCategory(){
+    public List<Category> getCategory() {
         return categoryService.getCategory();
     }
 }

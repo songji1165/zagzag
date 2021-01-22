@@ -1,12 +1,9 @@
 package com.jtrio.zagzag.review;
 
 import com.jtrio.zagzag.model.*;
-import com.jtrio.zagzag.user.UserDto;
 import lombok.Data;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class ReviewDto {
@@ -21,7 +18,7 @@ public class ReviewDto {
     private String email;
     private Boolean myReveiw = false;
 
-    public static ReviewDto toReviewDto(Review review, Long likers){
+    public static ReviewDto toReviewDto(Review review, Long likers) {
         ReviewDto reviewDto = new ReviewDto();
 
         reviewDto.setId(review.getId());
@@ -36,7 +33,7 @@ public class ReviewDto {
         return reviewDto;
     }
 
-    public static ReviewDto toReviewDto(Review review, Long likers, String userEmail, boolean liked){
+    public static ReviewDto toReviewDto(Review review, Long likers, String userEmail, boolean liked) {
         ReviewDto reviewDto = new ReviewDto();
 
         reviewDto.setId(review.getId());
@@ -49,7 +46,7 @@ public class ReviewDto {
         reviewDto.setLikers(likers);
         reviewDto.setLiked(liked);
 
-        if(userEmail.equals(review.getUser().getEmail())){
+        if (userEmail.equals(review.getUser().getEmail())) {
             reviewDto.setMyReveiw(true);
         }
 
