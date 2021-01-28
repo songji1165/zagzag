@@ -26,13 +26,16 @@ public class CommentDto {
         CommentDto commentDto = new CommentDto();
 
         commentDto.setId(comment.getId());
-        commentDto.setContent(comment.getContent());
         commentDto.setType(comment.getType());
         commentDto.setStatus(comment.getStatus());
         commentDto.setSecret(comment.getSecret());
         commentDto.setCreated(comment.getCreated());
         commentDto.setUpdated(comment.getUpdated());
         commentDto.setEmail(comment.getUser().getEmail());
+
+        if (!comment.getSecret() && comment.getStatus().equals(MessageStatus.NORMAL))
+            commentDto.setContent(comment.getContent());
+
         return commentDto;
     }
 
@@ -40,14 +43,30 @@ public class CommentDto {
         CommentDto commentDto = new CommentDto();
 
         commentDto.setId(comment.getId());
-        commentDto.setContent(comment.getContent());
         commentDto.setType(comment.getType());
         commentDto.setStatus(comment.getStatus());
         commentDto.setSecret(comment.getSecret());
         commentDto.setCreated(comment.getCreated());
         commentDto.setEmail(comment.getUser().getEmail());
 
-        if (comment.getUser().getEmail().equals(user.getEmail())) {
+        /**
+         *  1. secret = true :
+         *      1) user = user : content O
+         *      2) user != user : content X
+         *
+         *     secret = false :
+         *          content O
+         *
+         *  2. status = Delete | Block :
+         *      Content : X
+         * */
+        if (comment.getStatus() == MessageStatus.NORMAL) {
+            if (comment.getUser().equals(user) || !comment.getSecret()) {
+                commentDto.setContent(comment.getContent());
+            }
+        }
+
+        if (comment.getUser().equals(user)) {
             commentDto.setMyComment(true);
         }
 

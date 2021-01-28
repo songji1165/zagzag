@@ -16,7 +16,7 @@ public class CommentController {
     @PostMapping
     public CommentDto createComment(
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody CommentCommand commentCommand
+            @RequestBody CommentCommand.CreateComment commentCommand
     ) {
         return commentService.createComment(securityUser, commentCommand);
     }
@@ -28,4 +28,14 @@ public class CommentController {
     ) {
         return commentService.getQuestionComments(questionId, securityUser);
     }
+
+    @PutMapping("/{id}")
+    public CommentDto updateComments(
+            @PathVariable Long id,
+            @RequestBody CommentCommand.UpdateComment commentCommand,
+            @AuthenticationPrincipal SecurityUser securityUser
+    ) {
+        return commentService.updateComment(id, commentCommand, securityUser);
+    }
+
 }

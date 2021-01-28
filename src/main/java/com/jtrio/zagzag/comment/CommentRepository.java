@@ -18,4 +18,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByQuestion(Question question);
 
     Long countByQuestion(Question question);
+
+    boolean existsByQuestionAndSecret(Question question, boolean secret);
 }
