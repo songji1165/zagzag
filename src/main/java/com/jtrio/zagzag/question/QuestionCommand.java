@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 public class QuestionCommand {
     @Data
-    public static class CreateQuestionCommand {
+    public static class CreateQuestion {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private MessageStatus status = MessageStatus.NORMAL;
@@ -37,7 +37,7 @@ public class QuestionCommand {
     }
 
     @Data
-    public static class updateQuestionCommand {
+    public static class UpdateQuestion {
         private String content;
         private Boolean secret;
 

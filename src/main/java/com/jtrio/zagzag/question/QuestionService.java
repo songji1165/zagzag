@@ -26,7 +26,7 @@ public class QuestionService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public QuestionDto createQuestion(SecurityUser securityUser, QuestionCommand.CreateQuestionCommand questionCommand) {
+    public QuestionDto createQuestion(SecurityUser securityUser, QuestionCommand.CreateQuestion questionCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(questionCommand.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품 찾을 수 없습니다."));
 
@@ -59,12 +59,20 @@ public class QuestionService {
     }
 
     @Transactional
-    public QuestionDto updateQuestion(Long id, SecurityUser securityUser, QuestionCommand.updateQuestionCommand updateQuestionCommand) {
+    public QuestionDto updateQuestion(Long id, SecurityUser securityUser, QuestionCommand.UpdateQuestion questionCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰 찾을 수 없습니다."));
 
         if (user.equals(question.getUser())) {
-            updateQuestionCommand.toQuestion(question);
+            /**
+             * secret false-> true 수정일 경우,
+             *      comment에 (secret=true) 가 있으면 안 된다.
+             * */
+            if(commentRepository.existsByQuestionAndSecret(question, true) && questionCommand.getSecret()){
+                if(!question.getSecret()) throw new FailedChangeException("비공개의 댓글이 존재하는 경우, 해당 문의글을 공개로 변경할 수 없습니다.");
+            }
+
+            questionCommand.toQuestion(question);
             questionRepository.save(question);
             Long comments = commentRepository.countByQuestion(question);
 

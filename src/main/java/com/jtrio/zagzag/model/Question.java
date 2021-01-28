@@ -23,7 +23,7 @@ public class Question {
     private String content;
     private CommenterType type; //구매자 여부
     private MessageStatus status; // 차단글 여부
-    private Boolean secret; // 0: 일반, 1: 비밀
+    private Boolean secret;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate

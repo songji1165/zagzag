@@ -17,7 +17,7 @@ public class QuestionController {
     @PostMapping
     public QuestionDto createQuestion(
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody QuestionCommand.CreateQuestionCommand questionCommand
+            @RequestBody QuestionCommand.CreateQuestion questionCommand
     ) {
         return questionService.createQuestion(securityUser, questionCommand);
     }
@@ -35,9 +35,9 @@ public class QuestionController {
     public QuestionDto updateQuestion(
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody QuestionCommand.updateQuestionCommand updateQuestionCommand
+            @RequestBody QuestionCommand.UpdateQuestion QuestionCommand
     ) {
-        return questionService.updateQuestion(id, securityUser, updateQuestionCommand);
+        return questionService.updateQuestion(id, securityUser, QuestionCommand);
     }
 
 }
