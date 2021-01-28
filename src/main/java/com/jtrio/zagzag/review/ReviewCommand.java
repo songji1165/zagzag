@@ -7,13 +7,13 @@ import javax.validation.constraints.*;
 
 public class ReviewCommand {
     @Data
-    public static class createReview {
+    public static class CreateReview {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
-        @Min(0)
+        @Min(2)
         @Max(10)
         private byte productScore;
-        @Min(0)
+        @Min(2)
         @Max(10)
         private byte deliveryScore;
         @NotBlank(message = "상품을 선택해주세요")
@@ -31,6 +31,20 @@ public class ReviewCommand {
             review.setProduct(product);
             review.setOrder(order);
 
+            return review;
+        }
+    }
+
+    @Data
+    public static class UpdateReview {
+        private String content;
+        private byte productScore;
+        private byte deliveryScore;
+
+        public Review toReview(Review review) {
+            if (content != null) review.setContent(content);
+            if (productScore >= 2) review.setProductScore(productScore);
+            if (deliveryScore >= 2) review.setDeliveryScore(deliveryScore);
             return review;
         }
     }

@@ -54,7 +54,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewDto createReview(SecurityUser securityUser, ReviewCommand.createReview reviewCommand) {
+    public ReviewDto createReview(SecurityUser securityUser, ReviewCommand.CreateReview reviewCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Product product = productRepository.findById(reviewCommand.getProductId()).orElseThrow(() -> new NotFoundException("존재하지 않는 상품입니다."));
         ProductOrder order = orderRepository.findById(reviewCommand.getOrderId()).orElseThrow(() -> new NonPurchaseException("주문번호를 확인해주세요."));
@@ -73,6 +73,19 @@ public class ReviewService {
         productService.updateScore(review.getProduct());
 
         return ReviewDto.toReviewDto(review, 0L, user.getEmail(), false);
+    }
+
+    @Transactional
+    public ReviewDto updateReview(SecurityUser securityUser, Long id, ReviewCommand.UpdateReview reviewCommand){
+        User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+        Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
+
+        reviewCommand.toReview(review);
+        reviewRepository.save(review);
+
+        productService.updateScore(review.getProduct());
+
+        return ReviewDto.toReviewDto(review, likerRepository.countByReview(review), user.getEmail(), likerRepository.existsByUserAndReview(user, review));
     }
 
 }

@@ -28,9 +28,18 @@ public class ReviewController {
     @PostMapping
     public ReviewDto createReview(
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody ReviewCommand.createReview review
+            @RequestBody ReviewCommand.CreateReview review
     ) {
         return reviewService.createReview(securityUser, review);
+    }
+
+    @PutMapping("/{id}")
+    public ReviewDto updateReview(
+            @AuthenticationPrincipal SecurityUser securityUser,
+            @PathVariable Long id,
+            @RequestBody ReviewCommand.UpdateReview review
+    ){
+        return reviewService.updateReview(securityUser, id, review);
     }
 
     @PutMapping("likers/{id}")
