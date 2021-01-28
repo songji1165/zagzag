@@ -8,7 +8,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 public class ProductCommand {
-
     @Data
     public static class CreateProduct {
         @NotBlank(message = "상품명을 입력해주세요.")
@@ -31,23 +30,6 @@ public class ProductCommand {
 
             return product;
         }
-    }
-
-    @Data
-    public static class SelectProduct {
-        @NotBlank
-        private String name;
-        @NotBlank
-        private Integer price;
-    }
-
-    @Data
-    public static class UpdateProductScore {
-        @NotBlank
-        private String name;
-        @NotBlank
-        private Integer price;
-
     }
 
 }

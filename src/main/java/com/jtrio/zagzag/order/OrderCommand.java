@@ -4,16 +4,10 @@ import com.jtrio.zagzag.enums.OrderStatus;
 import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.User;
-import com.jtrio.zagzag.product.ProductDto;
-import com.jtrio.zagzag.user.UserCommand;
 import lombok.Data;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class OrderCommand {
     @Data
@@ -35,7 +29,6 @@ public class OrderCommand {
 
             return order;
         }
-
     }
 
     @Data
@@ -48,7 +41,6 @@ public class OrderCommand {
 
             return productOrder;
         }
-
     }
 
 }

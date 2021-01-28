@@ -2,19 +2,15 @@ package com.jtrio.zagzag.aop;
 
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 
 @Slf4j
 @Aspect
@@ -41,21 +37,22 @@ public class LoggingAspect {
     @Around("execution(* com.jtrio.zagzag..*Controller.*(..))")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        HttpSession session = request.getSession();
 
         long start = System.currentTimeMillis();
         Object result = null;
+
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
             log.error("error msg: ", e);
             throw e;
         }
+
         long end = System.currentTimeMillis();
         long time = (end - start);
+
         log.info("userId: {}, requesst: {}, params: {}, elapse time : {}", getUserId(), request.getRequestURL(),
                 proceedingJoinPoint.getArgs(), time);
-        log.info("__________________ Session: ", session, "--------------");
         return result;
     }
 
@@ -64,20 +61,4 @@ public class LoggingAspect {
         return principal instanceof SecurityUser ? ((SecurityUser) principal).getUserId() : -1;
     }
 
-    @Before("execution(* com.jtrio.zagzag..*Service.*(..))")
-    public void serviceLogging(JoinPoint joinPoint) throws Throwable {
-        Object params[] = joinPoint.getArgs();
-        for (Object param : params) {
-            log.info("++++++++++", param.toString());
-        }
-
-        log.info("----------------------");
-        log.info("1.", Arrays.toString(joinPoint.getArgs()));
-        log.info("2.", joinPoint.getKind());
-        log.info("3.", joinPoint.getSignature());
-        log.info("4.", joinPoint.getTarget().toString());
-        log.info("5.", joinPoint.getThis().toString());
-        log.info("5.", joinPoint.getThis().toString());
-        log.info("----------------------");
-    }
 }
