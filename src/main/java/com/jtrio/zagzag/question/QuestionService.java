@@ -34,8 +34,7 @@ public class QuestionService {
         Question question = questionCommand.toQuestion(user, product, order);
         questionRepository.save(question);
 
-        Long comments = commentRepository.countByQuestion(question);
-        return QuestionDto.toQuestionDto(question, comments, user);
+        return QuestionDto.toQuestionDto(question, 0L, user);
     }
 
     public Page<QuestionDto> getProductQuestions(Long id, SecurityUser securityUser, Pageable pageable) {
@@ -63,23 +62,23 @@ public class QuestionService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰 찾을 수 없습니다."));
 
-        if (user.equals(question.getUser())) {
-            /**
-             * secret false-> true 수정일 경우,
-             *      comment에 (secret=true) 가 있으면 안 된다.
-             * */
-            if(commentRepository.existsByQuestionAndSecret(question, true) && questionCommand.getSecret()){
-                if(!question.getSecret()) throw new FailedChangeException("비공개의 댓글이 존재하는 경우, 해당 문의글을 공개로 변경할 수 없습니다.");
-            }
+        if (!user.equals(question.getUser())) throw new FailedChangeException("리뷰를 작성한 사용자만 수정 가능합니다.");
 
-            questionCommand.toQuestion(question);
-            questionRepository.save(question);
-            Long comments = commentRepository.countByQuestion(question);
+        if (!question.getSecret() && questionCommand.getSecret()) {
+            Long questionCommnets = commentRepository.countByQuestion(question);
+            Long userComments = commentRepository.countByQuestionAndUser(question, user);
 
-            return QuestionDto.toQuestionDto(question, comments, user);
-        } else {
-            throw new FailedChangeException("리뷰를 작성한 사용자만 수정 가능합니다.");
+            if (questionCommnets != userComments)
+                throw new FailedChangeException("다른 작성자의 댓글이 존재하는 경우, 비밀글 전환이 불가능합니다.");
         }
+
+        commentRepository.updatesByCommentSecret(question, questionCommand.getSecret());
+        questionCommand.toQuestion(question);
+        questionRepository.save(question);
+        Long comments = commentRepository.countByQuestion(question);
+
+        return QuestionDto.toQuestionDto(question, comments, user);
+
     }
 
 }
