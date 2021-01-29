@@ -25,12 +25,7 @@ public class QuestionCommand {
             question.setSecret(secret);
             question.setUser(user);
             question.setProduct(product);
-
-            if (buyer) {
-                question.setType(CommenterType.BUYER);
-            } else {
-                question.setType(CommenterType.NON_BUYER);
-            }
+            question.setType(buyer ? CommenterType.BUYER : CommenterType.NON_BUYER);
 
             return question;
         }
@@ -38,17 +33,13 @@ public class QuestionCommand {
 
     @Data
     public static class UpdateQuestion {
+        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private Boolean secret;
 
         public Question toQuestion(Question question) {
-            if (content != null) {
-                question.setContent(content);
-            }
-
-            if (secret != null && !secret.equals(question.getSecret())) {
-                question.setSecret(secret);
-            }
+            question.setContent(content);
+            if (secret != null) question.setSecret(secret);
 
             return question;
         }

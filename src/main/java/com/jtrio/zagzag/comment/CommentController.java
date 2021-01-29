@@ -16,16 +16,14 @@ public class CommentController {
     @PostMapping
     public CommentDto createComment(
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody CommentCommand.CreateComment commentCommand
-    ) {
+            @RequestBody CommentCommand.CreateComment commentCommand) {
         return commentService.createComment(securityUser, commentCommand);
     }
 
     @GetMapping("/question/{questionId}")
     public List<CommentDto> getQuestionComments(
             @PathVariable Long questionId,
-            @AuthenticationPrincipal SecurityUser securityUser
-    ) {
+            @AuthenticationPrincipal SecurityUser securityUser) {
         return commentService.getQuestionComments(questionId, securityUser);
     }
 
@@ -33,8 +31,7 @@ public class CommentController {
     public CommentDto updateComments(
             @PathVariable Long id,
             @RequestBody CommentCommand.UpdateComment commentCommand,
-            @AuthenticationPrincipal SecurityUser securityUser
-    ) {
+            @AuthenticationPrincipal SecurityUser securityUser) {
         return commentService.updateComment(id, commentCommand, securityUser);
     }
 

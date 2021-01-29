@@ -26,16 +26,6 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
-    /**
-     * Spring Security
-     * 1. 클라이언트 User정보 받기
-     * 2. User의 정보를  인증된 User정보와 맞는지 서버에서 정보 찾기
-     * 3. 인증된 정보인 경우에만, 주문 기능 사용
-     * <p>
-     * ========================
-     * 대체 : user정보가 등록된 user인지 확인하기
-     */
-
     @Transactional
     public OrderDto createOrder(SecurityUser securityUser, OrderCommand.OrderProduct params) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
@@ -65,20 +55,16 @@ public class OrderService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 주문을 찾을 수 없습니다."));
 
-        if (user.equals(order.getUser())) { //주문자와 security user와 동일한지 확인
-            OrderStatus orderStatus = order.getStatus();
-            OrderStatus updateStatus = updateCommand.getStatus();
+        if (!user.equals(order.getUser())) throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
 
-            if (orderStatus == OrderStatus.ORDER && updateStatus == OrderStatus.RETURN) {
-                orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
-                return OrderDto.toOrderDto(order);
-            } else {
-                throw new FailedChangeException("주문 상태를 변경할 수 없습니다.");
-            }
+        OrderStatus orderStatus = order.getStatus();
+        OrderStatus updateStatus = updateCommand.getStatus();
 
-        } else {
-            throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
-        }
+        if (orderStatus != OrderStatus.ORDER && updateStatus != OrderStatus.RETURN)
+            throw new FailedChangeException("주문 상태를 변경할 수 없습니다.");
+
+        orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
+        return OrderDto.toOrderDto(order);
     }
 
 }

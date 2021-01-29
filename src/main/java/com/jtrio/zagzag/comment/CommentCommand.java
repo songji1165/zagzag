@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 public class CommentCommand {
     @Data
-    public static class CreateComment{
+    public static class CreateComment {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private MessageStatus status = MessageStatus.NORMAL;
@@ -24,26 +24,21 @@ public class CommentCommand {
             comment.setSecret(question.getSecret());//문의글의 비밀글 여부를 따른다.
             comment.setUser(user);
             comment.setQuestion(question);
-
-            if (buyer) {
-                comment.setType(CommenterType.BUYER);
-            } else {
-                comment.setType(CommenterType.NON_BUYER);
-            }
+            comment.setType(buyer ? CommenterType.BUYER : CommenterType.NON_BUYER);
 
             return comment;
         }
     }
 
     @Data
-    public static class UpdateComment{
+    public static class UpdateComment {
+        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private MessageStatus status;
 
         public Comment toComment(Comment comment) {
-            if(content != null) comment.setContent(content);
-
-            if(content != null && comment.getStatus().equals(status)) comment.setContent(content);
+            comment.setContent(content);
+            if (status != null) comment.setStatus(status);
 
             return comment;
         }

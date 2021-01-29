@@ -18,21 +18,6 @@ public class ReviewDto {
     private String email;
     private Boolean myReveiw = false;
 
-    public static ReviewDto toReviewDto(Review review, Long likers) {
-        ReviewDto reviewDto = new ReviewDto();
-
-        reviewDto.setId(review.getId());
-        reviewDto.setContent(review.getContent());
-        reviewDto.setProductScore(review.getProductScore());
-        reviewDto.setDeliveryScore(review.getDeliveryScore());
-        reviewDto.setLikers(likers);
-        reviewDto.setCreated(review.getCreated());
-        reviewDto.setUpdated(review.getUpdated());
-        reviewDto.setEmail(review.getUser().getEmail());
-
-        return reviewDto;
-    }
-
     public static ReviewDto toReviewDto(Review review, Long likers, String userEmail, boolean liked) {
         ReviewDto reviewDto = new ReviewDto();
 
@@ -45,10 +30,7 @@ public class ReviewDto {
         reviewDto.setEmail(review.getUser().getEmail());
         reviewDto.setLikers(likers);
         reviewDto.setLiked(liked);
-
-        if (userEmail.equals(review.getUser().getEmail())) {
-            reviewDto.setMyReveiw(true);
-        }
+        reviewDto.setMyReveiw(userEmail.equals(review.getUser().getEmail()) ? true : false);
 
         return reviewDto;
     }

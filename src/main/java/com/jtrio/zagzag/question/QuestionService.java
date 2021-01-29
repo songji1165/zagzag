@@ -38,23 +38,17 @@ public class QuestionService {
     }
 
     public Page<QuestionDto> getProductQuestions(Long id, SecurityUser securityUser, Pageable pageable) {
-
+        User user =
+                securityUser != null ?
+                        userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다.")) :
+                        null;
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 상품 찾을 수 없습니다."));
         Page<Question> questions = questionRepository.findByProduct(product, pageable);
 
-        if (securityUser == null) {// 비회원
-            return questions.map(question -> {
-                Long comments = commentRepository.countByQuestion(question);
-                return QuestionDto.toQuestionDto(question, comments);
-            });
-        } else { //회원
-            User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-
-            return questions.map(question -> {
-                Long comments = commentRepository.countByQuestion(question);
-                return QuestionDto.toQuestionDto(question, comments, user);
-            });
-        }
+        return questions.map(question -> {
+            Long comments = commentRepository.countByQuestion(question);
+            return QuestionDto.toQuestionDto(question, comments, user);
+        });
     }
 
     @Transactional

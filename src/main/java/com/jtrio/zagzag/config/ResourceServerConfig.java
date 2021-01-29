@@ -19,7 +19,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/users/duplicate-email", "/comments/**", "/categories", "/products", "/questions", "/reviews/**")
+                .antMatchers(HttpMethod.GET, "/users/duplicate-email", "/comments/**", "/categories/**", "/products/**", "/questions/**", "/reviews/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

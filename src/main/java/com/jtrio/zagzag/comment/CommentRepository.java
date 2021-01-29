@@ -1,9 +1,8 @@
 package com.jtrio.zagzag.comment;
 
 import com.jtrio.zagzag.model.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,5 +18,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Long countByQuestion(Question question);
 
-    boolean existsByQuestionAndSecret(Question question, boolean secret);
+    Long countByQuestionAndUser(Question question, User user);
+
+    @Modifying
+    @Query(value = "UPDATE Comment a set a.secret = :secret where a.question = :question")
+    public void updatesByCommentSecret(@Param("question") Question question, @Param("secret") boolean secret);
 }

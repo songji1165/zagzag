@@ -1,8 +1,6 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.enums.OrderStatus;
-import com.jtrio.zagzag.order.OrderDto;
-import com.jtrio.zagzag.product.ProductDto;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,8 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data

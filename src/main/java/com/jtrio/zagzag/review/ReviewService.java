@@ -28,29 +28,23 @@ public class ReviewService {
     private final LikerRepository likerRepository;
 
     public Page<ReviewDto> getProductReviews(Long id, SecurityUser securityUser, Pageable pageable) {
+        User user =
+                securityUser != null ?
+                        userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다.")) :
+                        null;
+        String userEmail = user != null ? user.getEmail() : null;
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 상품 찾을 수 없습니다."));
-        // 해당 상품의 전체 리뷰 찾기
         Page<Review> productReviews = reviewRepository.findByProduct(product, pageable);
 
-        if (securityUser == null) { // 비회원
-            return productReviews.map(review -> {
-                Long likers = likerRepository.countByReview(review);
-                return ReviewDto.toReviewDto(review, likers);
-            });
-        } else { //회원인증
-            User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-            String email = user.getEmail();
-
-            return productReviews.map(review -> {
-                Long likers = likerRepository.countByReview(review);
-                boolean liked = likerRepository.existsByUserAndReview(user, review);
-                return ReviewDto.toReviewDto(
-                        review,
-                        likers,
-                        email,
-                        liked);
-            });
-        }
+        return productReviews.map(review -> {
+            Long likers = likerRepository.countByReview(review);
+            boolean liked = user != null ? likerRepository.existsByUserAndReview(user, review) : false;
+            return ReviewDto.toReviewDto(
+                    review,
+                    likers,
+                    userEmail,
+                    liked);
+        });
     }
 
     @Transactional
@@ -76,7 +70,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewDto updateReview(SecurityUser securityUser, Long id, ReviewCommand.UpdateReview reviewCommand){
+    public ReviewDto updateReview(SecurityUser securityUser, Long id, ReviewCommand.UpdateReview reviewCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
 

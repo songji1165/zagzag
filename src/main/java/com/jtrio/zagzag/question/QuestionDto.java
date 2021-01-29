@@ -22,29 +22,11 @@ public class QuestionDto {
     private String email;
     private Boolean myQuestion = false;
 
-    public static QuestionDto toQuestionDto(Question question, Long comments) {
-        QuestionDto questionDto = new QuestionDto();
-
-        questionDto.setId(question.getId());
-        questionDto.setProductId(question.getProduct().getId());
-        questionDto.setContent(question.getContent());
-        questionDto.setType(question.getType());
-        questionDto.setStatus(question.getStatus());
-        questionDto.setSecret(question.getSecret());
-        questionDto.setCreated(question.getCreated());
-        questionDto.setUpdated(question.getUpdated());
-        questionDto.setComments(comments);
-        questionDto.setEmail(question.getUser().getEmail());
-
-        return questionDto;
-    }
-
     public static QuestionDto toQuestionDto(Question question, Long comments, User user) {
         QuestionDto questionDto = new QuestionDto();
 
         questionDto.setId(question.getId());
         questionDto.setProductId(question.getProduct().getId());
-        questionDto.setContent(question.getContent());
         questionDto.setType(question.getType());
         questionDto.setStatus(question.getStatus());
         questionDto.setSecret(question.getSecret());
@@ -53,10 +35,31 @@ public class QuestionDto {
 
         User questionUser = question.getUser();
         questionDto.setEmail(questionUser.getEmail());
-        if (questionUser.equals(user)) {
-            questionDto.setMyQuestion(true);
-        }
+        questionDto.setMyQuestion(questionUser.equals(user) ? true : false);
+        String contentDto = setCommentDto(
+                questionUser.equals(user) ? false : question.getSecret(),
+                question.getStatus(),
+                question.getContent()
+        );
+        questionDto.setContent(contentDto);
 
         return questionDto;
+    }
+
+    private static String setCommentDto(Boolean secret, MessageStatus status, String comment) {
+        String result = secret ? "해당글은 비밀글입니다." : comment;
+
+        switch (status) {
+            case DELETE:
+                result = status.DELETE.getName();
+                break;
+            case BLOCK:
+                result = status.BLOCK.getName();
+                break;
+            default:
+                break;
+        }
+
+        return result;
     }
 }
