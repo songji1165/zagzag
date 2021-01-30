@@ -20,16 +20,14 @@ public class ReviewController {
     public Page<ReviewDto> getProductReviews(
             @PathVariable Long productId,
             @AuthenticationPrincipal SecurityUser securityUser,
-            @PageableDefault Pageable pageable
-    ) {
+            @PageableDefault Pageable pageable) {
         return reviewService.getProductReviews(productId, securityUser, pageable);
     }
 
     @PostMapping
     public ReviewDto createReview(
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody ReviewCommand.CreateReview review
-    ) {
+            @RequestBody ReviewCommand.CreateReview review) {
         return reviewService.createReview(securityUser, review);
     }
 
@@ -37,16 +35,14 @@ public class ReviewController {
     public ReviewDto updateReview(
             @AuthenticationPrincipal SecurityUser securityUser,
             @PathVariable Long id,
-            @RequestBody ReviewCommand.UpdateReview review
-    ){
+            @RequestBody ReviewCommand.UpdateReview review){
         return reviewService.updateReview(securityUser, id, review);
     }
 
     @PutMapping("likers/{id}")
     public Long updateLiker(
             @PathVariable Long id,
-            @AuthenticationPrincipal SecurityUser securityUser
-    ) {
+            @AuthenticationPrincipal SecurityUser securityUser) {
         return likerService.updateLiker(id, securityUser);
     }
 }

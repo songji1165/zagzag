@@ -17,26 +17,23 @@ public class QuestionController {
     @PostMapping
     public QuestionDto createQuestion(
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody QuestionCommand.CreateQuestion questionCommand
-    ) {
+            @RequestBody QuestionCommand.CreateQuestion questionCommand) {
         return questionService.createQuestion(securityUser, questionCommand);
     }
 
-    @GetMapping("/product/{productId}")
-    public Page<QuestionDto> getProductQuestions(
-            @PathVariable Long productId,
-            @AuthenticationPrincipal SecurityUser securityUser,
-            @PageableDefault() Pageable pageable
-    ) {
-        return questionService.getProductQuestions(productId, securityUser, pageable);
-    }
+//    @GetMapping("/product/{productId}")
+//    public Page<QuestionDto> getProductQuestions(
+//            @PathVariable Long productId,
+//            @AuthenticationPrincipal SecurityUser securityUser,
+//            @PageableDefault() Pageable pageable) {
+//        return questionService.getProductQuestions(productId, securityUser, pageable);
+//    }
 
     @PutMapping("/{id}")
     public QuestionDto updateQuestion(
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser,
-            @RequestBody QuestionCommand.UpdateQuestion QuestionCommand
-    ) {
+            @RequestBody QuestionCommand.UpdateQuestion QuestionCommand) {
         return questionService.updateQuestion(id, securityUser, QuestionCommand);
     }
 
