@@ -37,4 +37,5 @@ public class ProductController {
             @PageableDefault() Pageable pageable) {
         return questionService.getProductQuestions(productId, securityUser, pageable);
     }
+
 }
