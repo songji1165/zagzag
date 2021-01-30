@@ -20,13 +20,6 @@ public class CommentController {
         return commentService.createComment(securityUser, commentCommand);
     }
 
-    @GetMapping("/question/{questionId}")
-    public List<CommentDto> getQuestionComments(
-            @PathVariable Long questionId,
-            @AuthenticationPrincipal SecurityUser securityUser) {
-        return commentService.getQuestionComments(questionId, securityUser);
-    }
-
     @PutMapping("/{id}")
     public CommentDto updateComments(
             @PathVariable Long id,

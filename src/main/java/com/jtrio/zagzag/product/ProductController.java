@@ -30,12 +30,12 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @GetMapping("/{productId}/questions")
+    @GetMapping("/{id}/questions")
     public Page<QuestionDto> getProductQuestions(
-            @PathVariable Long productId,
+            @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser,
             @PageableDefault() Pageable pageable) {
-        return questionService.getProductQuestions(productId, securityUser, pageable);
+        return questionService.getProductQuestions(id, securityUser, pageable);
     }
 
 }
