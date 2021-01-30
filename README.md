@@ -137,6 +137,30 @@
     ```
    <br/>  
 
+3. GET /products/{productId}/questios
+   - 상품별 질문 조회
+   - 요청 파라미터
+    ```text
+     Params (pageable)
+   
+     Header
+     1. Authorization : Bearer {token}
+    ```
+   - 응답 데이터
+   ```text
+     1. id : reviewId
+     2. content : 리뷰 내용  
+     3. productScore : 상품 점수  
+     4. deliveryScore : 배달 점수  
+     5. likers : 좋아요 갯수  
+     6. liked : 좋아요 여부 ( ture / false )
+     7. created : 리뷰 작성 일자  
+     8. updated : 리뷰 수정 일자  
+     9. email : 작성자 이메일
+     10. myReveiw : 리뷰 작성자 여부 ( ture / false )
+    ```
+   <br/>  
+
 ### 3. Order
 1. POST /orders
    - 상품 주문
@@ -310,7 +334,7 @@
      1. id : questioId
      2. productId : productId  
      3. content : 질문 내용
-     4. type : 작성자 타입 (BUYER / NON_BUYER / SELLER )  
+     4. type : 작성자 타입 ( BUYER / NON_BUYER / SELLER )  
      5. status : 질문글 상태 ( DELETE / BLOCK / NORMAL )  
      6. secret : 비밀글 여부 ( ture / false )
      7. created : 리뷰 작성 일자  
@@ -319,33 +343,9 @@
      9. email : 작성자 이메일
      10. myQuestion : 질문 작성자 여부 ( ture / false )
     ```
-   <br/>  
+   <br/>
 
-2. GET /questios/product/{productId}
-   - 상품별 질문 조회
-   - 요청 파라미터
-    ```text
-     Params (pageable)
-   
-     Header
-     1. Authorization : Bearer {token}
-    ```
-   - 응답 데이터
-   ```text
-     1. id : reviewId
-     2. content : 리뷰 내용  
-     3. productScore : 상품 점수  
-     4. deliveryScore : 배달 점수  
-     5. likers : 좋아요 갯수  
-     6. liked : 좋아요 여부 ( ture / false )
-     7. created : 리뷰 작성 일자  
-     8. updated : 리뷰 수정 일자  
-     9. email : 작성자 이메일
-     10. myReveiw : 리뷰 작성자 여부 ( ture / false )
-    ```
-   <br/>  
-
-3. PUT questios/{questionId}
+2. PUT questios/{questionId}
    - 질문 업데이트
    - 요청 파라미터
     ```text
@@ -371,6 +371,27 @@
     ```
 <br/> 
 
+3. GET /questions/{questionId}/comments
+   - 질문별 답글 조회
+   - 요청 파라미터
+    ```text
+     Header
+     1. Authorization : Bearer {token}
+    ```
+   - 응답 데이터
+   ```text
+     1. id : commentId
+     2. content : 질문 내용
+     3. type : 작성자 타입 ( BUYER / NON_BUYER / SELLER )
+     4. status : 답변글 상태 ( DELETE / BLOCK / NORMAL )  
+     5. secret : 비밀글 여부 ( ture / false )
+     6. created : 답변 작성 일자  
+     7. updated : 답변 수정 일자  
+     8. email : 작성자 이메일
+     10. myComment : 답변 작성자 여부 ( ture / false )
+    ```
+   <br/>  
+
 ### 6. Comment
 1. POST /comments
    - 답변 작성
@@ -389,7 +410,7 @@
    ```text
      1. id : commentId
      2. content : 질문 내용
-     3. type : 작성자 타입 (BUYER / NON_BUYER / SELLER )
+     3. type : 작성자 타입 ( BUYER / NON_BUYER / SELLER )
      4. status : 답변글 상태 ( DELETE / BLOCK / NORMAL )  
      5. secret : 비밀글 여부 ( ture / false )
      6. created : 답변 작성 일자  
@@ -397,28 +418,32 @@
      8. email : 작성자 이메일
      10. myComment : 답변 작성자 여부 ( ture / false )
     ```
-   <br/>  
+   <br/>
 
-2. GET comments/question/{questionId}
-   - 질문별 답글 조회
+2. PUT comments/{commentId}
+   - 댓 업데이트
    - 요청 파라미터
     ```text
      Header
-     1. Authorization : Bearer {token}
+     1. **Authorization : Bearer {token}
+   
+     Body
+     1. (string) **content : 댓글 내용 
+     2. (boolean) secret : 비밀글 여부  
     ```
    - 응답 데이터
-   ```text
+    ```text
      1. id : commentId
-     2. content : 질문 내용
-     3. type : 작성자 타입 (BUYER / NON_BUYER / SELLER )
-     4. status : 답변글 상태 ( DELETE / BLOCK / NORMAL )  
-     5. secret : 비밀글 여부 ( ture / false )
-     6. created : 답변 작성 일자  
-     7. updated : 답변 수정 일자  
-     8. email : 작성자 이메일
-     10. myComment : 답변 작성자 여부 ( ture / false )
+     2. content : 댓 내용  
+     3. type : 작성자 타입 ( BUYER / NON_BUYER / SELLER )
+     4. status : ( ORDER / DELIVERY / RETURN )
+     5. secret : 비밀글 여부 ( ture / false )  
+     7. created : 댓글 작성 일자  
+     8. updated : 댓 수정 일자  
+     9. email : 작성자 이메일
+     10. myReveiw : 댓글 작성자 여부 ( ture / false )
     ```
-   <br/>  
+<br/> 
 
 ### 7. Category
 1. GET /categories
