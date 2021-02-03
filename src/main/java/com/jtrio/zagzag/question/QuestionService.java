@@ -27,7 +27,7 @@ public class QuestionService {
 
     @Transactional
     public QuestionDto createQuestion(SecurityUser securityUser, QuestionCommand.CreateQuestion questionCommand) {
-        User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
+        User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다. 로그인 상태를 확인해 주세요."));
         Product product = productRepository.findById(questionCommand.getProductId()).orElseThrow(() -> new NotFoundException("해당 상품 찾을 수 없습니다."));
 
         boolean order = orderRepository.existsByUserAndProduct(user, product);

@@ -74,6 +74,8 @@ public class ReviewService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
 
+        if(!review.getUser().equals(user)) throw new NotMatchUserException("리뷰 작성자만 수정 가능합니다.");
+
         reviewCommand.toReview(review);
         reviewRepository.save(review);
 
