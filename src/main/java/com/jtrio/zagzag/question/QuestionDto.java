@@ -35,7 +35,7 @@ public class QuestionDto {
 
         User questionUser = question.getUser();
         questionDto.setEmail(questionUser.getEmail());
-        questionDto.setMyQuestion(questionUser.equals(user) ? true : false);
+        questionDto.setMyQuestion(questionUser.equals(user));
         String contentDto = setCommentDto(
                 questionUser.equals(user) ? false : question.getSecret(),
                 question.getStatus(),

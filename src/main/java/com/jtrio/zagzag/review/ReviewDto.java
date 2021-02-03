@@ -30,7 +30,7 @@ public class ReviewDto {
         reviewDto.setEmail(review.getUser().getEmail());
         reviewDto.setLikers(likers);
         reviewDto.setLiked(liked);
-        reviewDto.setMyReveiw(userEmail.equals(review.getUser().getEmail()) ? true : false);
+        reviewDto.setMyReveiw(userEmail.equals(review.getUser().getEmail()));
 
         return reviewDto;
     }

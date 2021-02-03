@@ -31,7 +31,7 @@ public class CommentDto {
 
         User commentUser = comment.getUser();
         commentDto.setEmail(commentUser.getEmail());
-        commentDto.setMyComment(commentUser.equals(user) ? true : false);
+        commentDto.setMyComment(commentUser.equals(user));
         String contentDto = setCommentDto(
                 comment.getUser().equals(user) ? false : comment.getSecret(),
                 comment.getStatus(),
