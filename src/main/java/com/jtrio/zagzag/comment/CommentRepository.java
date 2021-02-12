@@ -18,7 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Long countByQuestion(Question question);
 
-    Long countByQuestionAndUser(Question question, User user);
+    boolean existsByQuestionAndUserNot(Question question, User user);
 
     @Modifying
     @Query(value = "UPDATE Comment a set a.secret = :secret where a.question = :question")

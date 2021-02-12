@@ -38,8 +38,7 @@ public class QuestionService {
     }
 
     public Page<QuestionDto> getProductQuestions(Long id, SecurityUser securityUser, Pageable pageable) {
-        User user =
-                securityUser != null ?
+        User user = securityUser != null ?
                         userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다.")) :
                         null;
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 상품 찾을 수 없습니다."));
@@ -56,13 +55,14 @@ public class QuestionService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰 찾을 수 없습니다."));
 
-        if (!user.equals(question.getUser())) { throw new FailedChangeException("리뷰를 작성한 사용자만 수정 가능합니다."); }
+        if (!user.equals(question.getUser())) {
+            throw new FailedChangeException("리뷰를 작성한 사용자만 수정 가능합니다.");
+        }
 
         if (!question.getSecret() && questionCommand.getSecret()) {
-            Long questionCommnets = commentRepository.countByQuestion(question);
-            Long userComments = commentRepository.countByQuestionAndUser(question, user);
-
-            if (questionCommnets != userComments) { throw new FailedChangeException("다른 작성자의 댓글이 존재하는 경우, 비밀글 전환이 불가능합니다."); }
+            if (commentRepository.existsByQuestionAndUserNot(question, user)) {
+                throw new FailedChangeException("다른 작성자의 댓글이 존재하는 경우, 비밀글 전환이 불가능합니다.");
+            }
         }
 
         commentRepository.updatesByCommentSecret(question, questionCommand.getSecret());
