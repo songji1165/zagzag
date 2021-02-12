@@ -48,10 +48,14 @@ public class CommentService {
         List<Comment> questionComments = commentRepository.findByQuestion(question);
         List<CommentDto> commentsDto = new ArrayList<>();
 
-        for (Comment comment : questionComments) {
+//        questionComments.forEach(comment -> {
+//            CommentDto commentDto = CommentDto.toCommentDto(comment, user);
+//            commentsDto.add(commentDto);
+//        });
+        questionComments.stream().forEach(comment -> {
             CommentDto commentDto = CommentDto.toCommentDto(comment, user);
             commentsDto.add(commentDto);
-        }
+        });
 
         return commentsDto;
     }
