@@ -13,8 +13,6 @@ public class CommentCommand {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
         private MessageStatus status = MessageStatus.NORMAL;
-        @NotBlank(message = "질문을 선택해주세요.")
-        private Long questionId;
 
         public Comment toComment(User user, Question question, boolean buyer) {
             Comment comment = new Comment();

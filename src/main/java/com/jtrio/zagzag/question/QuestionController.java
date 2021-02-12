@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.question;
 
+import com.jtrio.zagzag.comment.CommentCommand;
 import com.jtrio.zagzag.comment.CommentDto;
 import com.jtrio.zagzag.comment.CommentService;
 import com.jtrio.zagzag.security.SecurityUser;
@@ -36,6 +37,22 @@ public class QuestionController {
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser) {
         return commentService.getQuestionComments(id, securityUser);
+    }
+
+    @PostMapping("/{id}/comments")
+    public CommentDto createComment(
+            @PathVariable Long id,
+            @AuthenticationPrincipal SecurityUser securityUser,
+            @RequestBody CommentCommand.CreateComment commentCommand) {
+        return commentService.createComment(id, securityUser, commentCommand);
+    }
+
+    @PutMapping("/comments/{id}")
+    public CommentDto updateComments(
+            @PathVariable Long id,
+            @RequestBody CommentCommand.UpdateComment commentCommand,
+            @AuthenticationPrincipal SecurityUser securityUser) {
+        return commentService.updateComment(id, commentCommand, securityUser);
     }
 
 }

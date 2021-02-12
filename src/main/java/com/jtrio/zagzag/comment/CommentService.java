@@ -25,9 +25,9 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public CommentDto createComment(SecurityUser securityUser, CommentCommand.CreateComment commentCommand) {
+    public CommentDto createComment(Long id, SecurityUser securityUser, CommentCommand.CreateComment commentCommand) {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
-        Question question = questionRepository.findById(commentCommand.getQuestionId()).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
+        Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
         boolean buyer = orderRepository.existsByUserAndProduct(user, question.getProduct());
 
         if (question.getSecret() && !question.getUser().equals(user)) {
