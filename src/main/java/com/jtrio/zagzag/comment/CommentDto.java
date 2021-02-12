@@ -4,6 +4,7 @@ import com.jtrio.zagzag.enums.CommenterType;
 import com.jtrio.zagzag.enums.MessageStatus;
 import com.jtrio.zagzag.model.Comment;
 import com.jtrio.zagzag.model.User;
+import com.jtrio.zagzag.utils.ContentUtils;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -32,30 +33,15 @@ public class CommentDto {
         User commentUser = comment.getUser();
         commentDto.setEmail(commentUser.getEmail());
         commentDto.setMyComment(commentUser.equals(user));
-        String contentDto = setCommentDto(
+
+        String content = ContentUtils.setCommentDto(
                 comment.getUser().equals(user) ? false : comment.getSecret(),
                 comment.getStatus(),
                 comment.getContent()
         );
-        commentDto.setContent(contentDto);
+        commentDto.setContent(content);
 
         return commentDto;
     }
 
-    private static String setCommentDto(Boolean secret, MessageStatus status, String comment) {
-        String result = secret ? "해당글은 비밀글입니다." : comment;
-
-        switch (status) {
-            case DELETE:
-                result = status.DELETE.getName();
-                break;
-            case BLOCK:
-                result = status.BLOCK.getName();
-                break;
-            default:
-                break;
-        }
-
-        return result;
-    }
 }
