@@ -53,12 +53,11 @@ public class ReviewService {
         Product product = productRepository.findById(reviewCommand.getProductId()).orElseThrow(() -> new NotFoundException("존재하지 않는 상품입니다."));
         ProductOrder order = orderRepository.findById(reviewCommand.getOrderId()).orElseThrow(() -> new NonPurchaseException("주문번호를 확인해주세요."));
 
-        if (!order.getUser().equals(user)) throw new NotMatchUserException("주문건과 사용자의 정보가 일치하지 않습니다.");
+        if (!order.getUser().equals(user)) { throw new NotMatchUserException("주문건과 사용자의 정보가 일치하지 않습니다."); }
 
-        if (!product.getId().equals(order.getProduct().getId()))
-            throw new NonPurchaseException("주문한 상품이 맞는지 확인해주세요. 리뷰는 상품을 주문한 사용자만 입력할 수 있습니");
+        if (!product.getId().equals(order.getProduct().getId())) { throw new NonPurchaseException("주문한 상품이 맞는지 확인해주세요. 리뷰는 상품을 주문한 사용자만 입력할 수 있습니"); }
 
-        if (reviewRepository.existsByOrder(order)) throw new DuplicateDataException("리뷰는 주문 건당 한 개만 입력할 수 있습니다.");
+        if (reviewRepository.existsByOrder(order)) { throw new DuplicateDataException("리뷰는 주문 건당 한 개만 입력할 수 있습니다."); }
 
         Review review = reviewCommand.toReview(user, product, order);
         reviewRepository.save(review);
@@ -74,7 +73,7 @@ public class ReviewService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
 
-        if(!review.getUser().equals(user)) throw new NotMatchUserException("리뷰 작성자만 수정 가능합니다.");
+        if(!review.getUser().equals(user)) { throw new NotMatchUserException("리뷰 작성자만 수정 가능합니다."); }
 
         reviewCommand.toReview(review);
         reviewRepository.save(review);

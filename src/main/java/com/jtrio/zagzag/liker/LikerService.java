@@ -25,12 +25,12 @@ public class LikerService {
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 리뷰를 찾을 수 없습니다."));
 
         boolean likers = likerRepository.existsByUserAndReview(user, review);
-        if (likers) {
-            throw new DuplicateDataException("좋아요는 리뷰 한 개당 한 번만 가능합니다.");
-        } else {
-            Liker liker = LikerCommand.toLiker(user, review);
-            likerRepository.save(liker);
-            return likerRepository.countByReview(review);
-        }
+
+        if (likers) { throw new DuplicateDataException("좋아요는 리뷰 한 개당 한 번만 가능합니다."); }
+
+        Liker liker = LikerCommand.toLiker(user, review);
+        likerRepository.save(liker);
+        return likerRepository.countByReview(review);
+
     }
 }

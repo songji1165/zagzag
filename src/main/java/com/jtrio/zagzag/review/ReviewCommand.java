@@ -42,9 +42,9 @@ public class ReviewCommand {
         private byte deliveryScore;
 
         public Review toReview(Review review) {
-            if (content != null) review.setContent(content);
-            if (productScore >= 2) review.setProductScore(productScore);
-            if (deliveryScore >= 2) review.setDeliveryScore(deliveryScore);
+            if (content != null) { review.setContent(content); }
+            if (productScore >= 2) { review.setProductScore(productScore); }
+            if (deliveryScore >= 2) { review.setDeliveryScore(deliveryScore); }
             return review;
         }
     }

@@ -38,7 +38,7 @@ public class CommentCommand {
 
         public Comment toComment(Comment comment) {
             comment.setContent(content);
-            if (status != null) comment.setStatus(status);
+            if (status != null) { comment.setStatus(status); }
 
             return comment;
         }

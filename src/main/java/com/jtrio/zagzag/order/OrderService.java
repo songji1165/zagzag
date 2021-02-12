@@ -41,7 +41,7 @@ public class OrderService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
 
         // 시작기간에러 // 전체조회 => 데이터가 많은 경우, 메모리 문제가 생길 수 있음!
-        if (startDt == null) throw new ParameterMissedException("시작기간을 선택해주세요.");
+        if (startDt == null) { throw new ParameterMissedException("시작기간을 선택해주세요."); }
 
         LocalDateTime start = startDt.atStartOfDay();
         Page<ProductOrder> products = orderRepository.findByCreatedGreaterThanAndUser(start, user, pageable);
@@ -55,13 +55,12 @@ public class OrderService {
         User user = userRepository.findByEmail(securityUser.getUsername()).orElseThrow(() -> new NotFoundException("해당 사용자를 찾을 수 없습니다."));
         ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 주문을 찾을 수 없습니다."));
 
-        if (!user.equals(order.getUser())) throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요.");
+        if (!user.equals(order.getUser())) { throw new ParameterMissedException("해당 주문의 사용자가 맞는지 확인해주세요."); }
 
         OrderStatus orderStatus = order.getStatus();
         OrderStatus updateStatus = updateCommand.getStatus();
 
-        if (orderStatus != OrderStatus.ORDER && updateStatus != OrderStatus.RETURN)
-            throw new FailedChangeException("주문 상태를 변경할 수 없습니다.");
+        if (orderStatus != OrderStatus.ORDER && updateStatus != OrderStatus.RETURN) { throw new FailedChangeException("주문 상태를 변경할 수 없습니다."); }
 
         orderRepository.save(updateCommand.toProductOrder(order, updateCommand.getStatus()));
         return OrderDto.toOrderDto(order);

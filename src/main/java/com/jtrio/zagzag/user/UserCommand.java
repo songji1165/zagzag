@@ -41,17 +41,11 @@ public class UserCommand {
         private String pass;
 
         public User toUser(User user) {
-            if (name != null) {
-                user.setName(name);
-            }
+            if (name != null) { user.setName(name); }
 
-            if (addr != null) {
-                user.setAddr(addr);
-            }
+            if (addr != null) { user.setAddr(addr); }
 
-            if (pass != null) {
-                user.setPass(pass);
-            }
+            if (pass != null) { user.setPass(pass); }
 
             return user;
         }

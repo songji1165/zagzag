@@ -39,7 +39,7 @@ public class QuestionCommand {
 
         public Question toQuestion(Question question) {
             question.setContent(content);
-            if (secret != null) question.setSecret(secret);
+            if (secret != null) { question.setSecret(secret); }
 
             return question;
         }
