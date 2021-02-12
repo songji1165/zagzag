@@ -2,6 +2,8 @@ package com.jtrio.zagzag.product;
 
 import com.jtrio.zagzag.question.QuestionDto;
 import com.jtrio.zagzag.question.QuestionService;
+import com.jtrio.zagzag.review.ReviewDto;
+import com.jtrio.zagzag.review.ReviewService;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
     private final QuestionService questionService;
+    private final ReviewService reviewService;
 
     @GetMapping
     public Page<ProductDto.CreateProductDto> getProducts(
@@ -36,6 +39,14 @@ public class ProductController {
             @AuthenticationPrincipal SecurityUser securityUser,
             @PageableDefault() Pageable pageable) {
         return questionService.getProductQuestions(id, securityUser, pageable);
+    }
+
+    @GetMapping("/{id}/reviews")
+    public Page<ReviewDto> getProductReviews(
+            @PathVariable Long id,
+            @AuthenticationPrincipal SecurityUser securityUser,
+            @PageableDefault Pageable pageable) {
+        return reviewService.getProductReviews(id, securityUser, pageable);
     }
 
 }

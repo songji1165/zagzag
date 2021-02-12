@@ -40,7 +40,7 @@ public class QuestionController {
     }
 
     @PostMapping("/{id}/comments")
-    public CommentDto createComment(
+    public CommentDto createQuestionComment(
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUser securityUser,
             @RequestBody CommentCommand.CreateComment commentCommand) {
