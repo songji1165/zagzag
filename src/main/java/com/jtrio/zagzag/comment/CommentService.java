@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +47,10 @@ public class CommentService {
                 null;
         Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
         List<Comment> questionComments = commentRepository.findByQuestion(question);
-        List<CommentDto> commentsDto = new ArrayList<>();
-        questionComments.stream()
-                .map(comment -> CommentDto.toCommentDto(comment, user))
-                .forEach(commentDto -> commentsDto.add(commentDto));
 
-        return commentsDto;
+        return  questionComments.stream()
+                .map(comment -> CommentDto.toCommentDto(comment, user))
+                .collect(Collectors.toList());
     }
 
     @Transactional
