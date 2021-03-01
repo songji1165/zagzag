@@ -1,7 +1,7 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.category.CategoryRepository;
-import com.jtrio.zagzag.product.ProductDto;
+import com.jtrio.zagzag.product.ProductDto.CreateProductDto;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,33 +21,19 @@ public class Product {
     private String name;
     private Integer price;
     private String image;
-    private Byte productScore;
-    private Byte deliveryScore;
+    private byte productScore;
+    private byte deliveryScore;
 
     @ManyToOne
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime created;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updated;
-
-    public ProductDto toProductDto(){
-        ProductDto productDto= new ProductDto();
-
-        productDto.setName(name);
-        productDto.setPrice(price);
-        productDto.setImage(image);
-        productDto.setProductScore(productScore);
-        productDto.setDeliveryScore(deliveryScore);
-        productDto.setCategoryId(category.getId());
-        productDto.setCategoryName(category.getName());
-
-        return productDto;
-    }
 
 }
