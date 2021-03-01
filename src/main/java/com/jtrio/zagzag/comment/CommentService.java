@@ -47,15 +47,9 @@ public class CommentService {
         Question question = questionRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 질문 찾을 수 없습니다."));
         List<Comment> questionComments = commentRepository.findByQuestion(question);
         List<CommentDto> commentsDto = new ArrayList<>();
-
-//        questionComments.forEach(comment -> {
-//            CommentDto commentDto = CommentDto.toCommentDto(comment, user);
-//            commentsDto.add(commentDto);
-//        });
-        questionComments.stream().forEach(comment -> {
-            CommentDto commentDto = CommentDto.toCommentDto(comment, user);
-            commentsDto.add(commentDto);
-        });
+        questionComments.stream()
+                .map(comment -> CommentDto.toCommentDto(comment, user))
+                .forEach(commentDto -> commentsDto.add(commentDto));
 
         return commentsDto;
     }
