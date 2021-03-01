@@ -8,7 +8,8 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-  data:
-    web:
-      pageable:
-        one-indexed-parameters: true
+
+logging:
+  level:
+#    org.springframework.security: debug
+    root: debug

@@ -1,8 +1,6 @@
 package com.jtrio.zagzag.security;
 
-import com.jtrio.zagzag.exception.NotFoundException;
 import com.jtrio.zagzag.model.User;
-import com.jtrio.zagzag.user.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,34 +17,41 @@ import java.util.List;
 public class SecurityUser implements UserDetails {
     private static final String ROLE_PREFIX = "ROLE_"; //security 권한자의 필수 명
 
-    private final User userDetail;
-
-    private User user;
+    private final User user;
 
     //접근 권한 부여
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole()));
         return authorities;
     }
 
-    public String getPassword(){ return user.getPass(); }
+    public String getPassword() {
+        return user.getPass();
+    }
 
-    public String getUsername(){
+    public String getUsername() {
         return user.getEmail();
     }
 
-    public boolean isAccountNonExpired(){
+    public boolean isAccountNonExpired() {
         return true;
     }
 
-    public boolean isAccountNonLocked(){
+    public boolean isAccountNonLocked() {
         return true;
     }
 
-    public boolean isCredentialsNonExpired(){
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    public boolean isEnabled(){ return true; }
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Long getUserId() {
+        return user.getId();
+    }
+
 }

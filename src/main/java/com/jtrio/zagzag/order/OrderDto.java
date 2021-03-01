@@ -7,7 +7,6 @@ import com.jtrio.zagzag.product.ProductDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class OrderDto {
@@ -18,7 +17,7 @@ public class OrderDto {
     private LocalDateTime created;
     private LocalDateTime updated;
 
-    public static OrderDto toOrderDto(ProductOrder order){
+    public static OrderDto toOrderDto(ProductOrder order) {
         ProductDto.OrderProductDto productDto = new ProductDto.OrderProductDto();
 
         Product product = order.getProduct();

@@ -25,7 +25,7 @@ public class Product {
     private byte deliveryScore;
 
     @ManyToOne
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -35,18 +35,5 @@ public class Product {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updated;
-
-//    public CreateProductDto toProductDto(){
-//        CreateProductDto productDto= new CreateProductDto();
-//
-//        productDto.setName(name);
-//        productDto.setPrice(price);
-//        productDto.setImage(image);
-//        productDto.setProductScore(productScore);
-//        productDto.setDeliveryScore(deliveryScore);
-//        productDto.setCategory(category);
-//
-//        return productDto;
-//    }
 
 }

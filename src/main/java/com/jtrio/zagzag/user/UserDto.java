@@ -11,7 +11,7 @@ public class UserDto {
     private Gender gender;
     private String addr;
 
-    public static UserDto toUserDto(User user){
+    public static UserDto toUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setName(user.getName());

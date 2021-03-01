@@ -1,19 +1,37 @@
 package com.jtrio.zagzag.review;
 
+import com.jtrio.zagzag.liker.LikerService;
+import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
+    private final LikerService likerService;
+
     @PostMapping
-    public ReviewDto createReview(@RequestBody ReviewCommand.createReview review){
-        return reviewService.createReview(review);
+    public ReviewDto createReview(
+            @AuthenticationPrincipal SecurityUser securityUser,
+            @RequestBody ReviewCommand.CreateReview review) {
+        return reviewService.createReview(securityUser, review);
+    }
+
+    @PutMapping("/{id}")
+    public ReviewDto updateReview(
+            @AuthenticationPrincipal SecurityUser securityUser,
+            @PathVariable Long id,
+            @RequestBody ReviewCommand.UpdateReview review){
+        return reviewService.updateReview(securityUser, id, review);
+    }
+
+    @PutMapping("likers/{id}")
+    public Long updateLiker(
+            @PathVariable Long id,
+            @AuthenticationPrincipal SecurityUser securityUser) {
+        return likerService.updateLiker(id, securityUser);
     }
 }

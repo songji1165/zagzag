@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class CustomErrorHandler{
+public class CustomErrorHandler {
 
 //    @ExceptionHandler(DuplicateEmailException.class)
 //    public ResponseEntity handleError(Exception e){
@@ -15,7 +15,7 @@ public class CustomErrorHandler{
 
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity handleError(ApiException e){
+    public ResponseEntity handleError(ApiException e) {
 //        if(e instanceof DuplicateEmailException){
 //            new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 //        }else if(e instanceof NotFoundException){

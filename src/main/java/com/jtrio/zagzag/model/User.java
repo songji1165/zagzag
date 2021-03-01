@@ -25,6 +25,7 @@ public class User {
     private String name;
     private Gender gender;
     private String addr;
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -34,13 +35,4 @@ public class User {
     @LastModifiedDate
     private LocalDateTime updated;
 
-//    public UserDto toUserDto(){
-//        UserDto userDto = new UserDto();
-//        userDto.setEmail(email);
-//        userDto.setName(name);
-//        userDto.setGender(gender);
-//        userDto.setAddr(addr);
-//
-//        return userDto;
-//    }
 }

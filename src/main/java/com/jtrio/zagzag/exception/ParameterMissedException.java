@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public class ParameterMissedException extends ApiException {
 
-    public ParameterMissedException(String message){
+    public ParameterMissedException(String message) {
         super(message);
     }
 
-    public HttpStatus getStatus(){
+    public HttpStatus getStatus() {
         return HttpStatus.BAD_REQUEST;
     }
 
